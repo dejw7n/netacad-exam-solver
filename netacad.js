@@ -12,7 +12,7 @@
 
 		constructor(src = undefined, visible = false) {
 			this.iframe = document.createElement("iframe");
-			this.iframe.style = "position: fixed; bottom: 5vw; left: 50%; width: 20vw; height: 20vh; transform: translate(-50%,0);"; //opacity:0.3;
+			this.iframe.style = "position: fixed; bottom: 5vw; left: 50%; width: 400px; height: 250px; transform: translate(-50%,0);"; //opacity:0.3;
 			if (src) this.setSource(src);
 			this.visible = visible;
 			if (visible) this.setVisible(visible);
@@ -80,48 +80,74 @@
 	let disabled = false;
 	let cache = "";
 
-	async function handleActivation(k) {
+	function handleActivation(k) {
 		if (iframe.visible) {
 			iframe.setVisible(false);
 		} else {
-			if (disabled) return;
-			iframe.setVisible(true);
-			let str;
-			try {
-				iframe.setSource(URLObjectFromHTML(CISCOgetQuestion()));
-				if (cache.indexOf(CISCOgetQuestion()) == -1) {
-					let res = await httpRequest(`https://itexamanswers.net/?s=${encodeURIComponent(CISCOgetQuestion())}`, "GET"); // search for answer
-					let url = ITEAparseFirstResult(res.responseText); // parse above
-					if (!url) return iframe.setSource(`https://google.com/search?q=${CISCOgetQuestion()}`);
-					cache = (await httpRequest(url, "GET")).responseText; // load the page with answers
-
-					let dp = new DOMParser();
-					let doc = dp.parseFromString(cache, "text/html"); // parse the html
-
-					doc.querySelectorAll("script").forEach((x) => {
-						if (x.innerHTML.includes("ez-cookie-dialog-wrapper") || x.innerHTML.includes("ezodn") || x.innerHTML.includes("connatix") || x.innerHTML.includes("google")) x.parentNode.removeChild(x);
-					});
-					doc.getElementById("wpd-bubble-wrapper").remove();
-
-					doc.querySelectorAll("span").forEach((x) => {
-						if (x.style.color != "red") {
-							x.remove();
-						}
-					});
-
-					[...doc.getElementsByClassName("message_box")].forEach((x) => x.parentNode.removeChild(x));
-					cache = "<html>" + doc.documentElement.innerHTML + "</html>";
-				}
-				let idx = cache.indexOf(CISCOgetQuestion()); // find the answer
-				if (idx == -1) return iframe.setSource(`https://google.com/search?q=${CISCOgetQuestion()}`);
-				str = insertStringAtIdx(idx, cache, `<p id="jumphere"></p>`); // add an element to jump to
-				str += `<script>window.location.hash="jumphere"</script>`; // jump to the element
-			} catch (error) {
-				str = `${error.name}<br>${error.message}`;
-			}
-			iframe.setSource(URLObjectFromHTML(str));
+			handleAnswer();
 		}
 	}
+	async function handleAnswer() {
+		if (disabled) return;
+		iframe.setVisible(true);
+		let str;
+		try {
+			iframe.setSource(URLObjectFromHTML(CISCOgetQuestion()));
+			if (cache.indexOf(CISCOgetQuestion()) == -1) {
+				let res = await httpRequest(`https://itexamanswers.net/?s=${encodeURIComponent(CISCOgetQuestion())}`, "GET"); // search for answer
+				let url = ITEAparseFirstResult(res.responseText); // parse above
+				if (!url) return iframe.setSource(`https://google.com/search?q=${CISCOgetQuestion()}`);
+				cache = (await httpRequest(url, "GET")).responseText; // load the page with answers
+
+				let dp = new DOMParser();
+				let doc = dp.parseFromString(cache, "text/html"); // parse the html
+
+				doc.querySelectorAll("span").forEach((x) => {
+					if (x.style.color != "red") {
+						x.remove();
+					}
+				});
+
+				[...doc.getElementsByClassName("message_box")].forEach((x) => x.parentNode.removeChild(x));
+				cache = "<html>" + doc.documentElement.innerHTML + "</html>";
+			}
+			let idx = cache.indexOf(CISCOgetQuestion()); // find the answer
+			if (idx == -1) return iframe.setSource(`https://google.com/search?q=${CISCOgetQuestion()}`);
+			str = insertStringAtIdx(idx, cache, `<p id="jumphere"></p>`); // add an element to jump to
+			str += `<script>window.location.hash="jumphere"</script>`; // jump to the element
+		} catch (error) {
+			str = `${error.name}<br>${error.message}`;
+		}
+		iframe.setSource(URLObjectFromHTML(str));
+
+		removeOverlays();
+	}
+
+	function removeOverlays() {
+		const removeOverlaysInterval = setInterval(function () {
+			let overlays = iframe.iframe.contentWindow.document.body.querySelectorAll("#ez-cookie-dialog-wrapper, #ezodn, #connatix, #google, #wpd-bubble-wrapper");
+			overlays.forEach((item) => item.remove());
+			if (overlays.length > 0) {
+				clearInterval(removeOverlaysInterval);
+			}
+		}, 1000);
+	}
+
+	let previousButton = document.querySelectorAll("button#previous")[0];
+	let nextButton = document.querySelectorAll("button#next")[0];
+	previousButton.onclick = function () {
+		refreshAnswer();
+	};
+	nextButton.onclick = function () {
+		refreshAnswer();
+	};
+	function refreshAnswer() {
+		console.log("RefreshAnswer()");
+		setTimeout(() => {
+			handleAnswer();
+		}, 1000);
+	}
+
 	document.addEventListener("mousedown", (event) => {
 		if (event.button == 1 || event.buttons == 4) {
 			handleActivation();
