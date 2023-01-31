@@ -12,7 +12,7 @@
 
 		constructor(src = undefined, visible = false) {
 			this.iframe = document.createElement("iframe");
-			this.iframe.style = "position: fixed; bottom: 5vw; left: 50%; width: 400px; height: 250px; transform: translate(-50%,0);"; //opacity:0.3;
+			this.iframe.style = "position: fixed; bottom: 5vw; left: 50%; width: 700px; height: 250px; transform: translate(-50%,0);"; //opacity:0.3;
 			if (src) this.setSource(src);
 			this.visible = visible;
 			if (visible) this.setVisible(visible);
