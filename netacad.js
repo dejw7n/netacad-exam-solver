@@ -5,7 +5,6 @@
 // ==/UserScript==
 
 (async () => {
-	/* IFrame crap */
 	class IFrame {
 		iframe = null;
 		visible = false;
@@ -13,9 +12,9 @@
 		constructor(src = undefined, visible = false) {
 			this.iframe = document.createElement("iframe");
 			this.iframe.style = "position: fixed; bottom: 5vw; left: 50%; width: 700px; height: 250px; transform: translate(-50%,0);"; //opacity:0.3;
-			if (src) this.setSource(src);
-			this.visible = visible;
-			if (visible) this.setVisible(visible);
+			//if (src) this.setSource(src);
+			//this.visible = visible;
+			this.setVisible(visible);
 		}
 
 		setSource(src) {
@@ -29,18 +28,20 @@
 		}
 	}
 
-	/* itexamanswers.net crap */
+	/* Regex to find the answers to question on the itexamanswers.net */
 	const ITEAgetResultsRegEX = /title front-view-title(?:.*?)<a(?:.*?)href=([a-zA-Z0-9:\/\.-]*)/gm;
 
+	/* Parses the html from the itexamanswers.net to anwsers to questions */
 	function ITEAparseFirstResult(html) {
 		let matches = [...html.matchAll(ITEAgetResultsRegEX)];
 		if (matches.length < 1) return undefined;
 		return matches[0][1];
 	}
 
-	/* cisco test crap */
+	/* Returns the array of answers to questions on the itexamanswers.net */
 	function CISCOgetQuestion() {
-		if (window.location.hostname == "127.0.0.1") return document.getElementById("question").innerText.trimStart().trimEnd().split("\n").pop().trimStart().trimEnd();
+		if (window.location.hostname == "127.0.0.1")
+			return document.getElementById("question").innerText.trimStart().trimEnd().split("\n").pop().trimStart().trimEnd();
 		for (const e of document.getElementsByClassName("question")) {
 			if (!e.className.includes("hidden")) {
 				let m = e.getElementsByClassName("mattext");
@@ -50,11 +51,12 @@
 		}
 	}
 
-	/* other*/
+	/* Creates an object to render the html to the canvas */
 	function URLObjectFromHTML(html) {
 		return URL.createObjectURL(new Blob([html], { type: "text/html" }));
 	}
 
+	/* Promisified XMLHttpRequest */
 	function httpRequest(url, method) {
 		let req = new XMLHttpRequest();
 		return new Promise((res, rej) => {
@@ -70,16 +72,16 @@
 		});
 	}
 
+	/* Inserts html code into the question array  */
 	function insertStringAtIdx(idx, oStr, insStr) {
 		return oStr.slice(0, idx) + insStr + oStr.slice(idx);
 	}
-
-	/* code that glues above together */
 
 	let iframe = new IFrame();
 	let disabled = false;
 	let cache = "";
 
+	// Activate / Disable
 	function handleActivation(k) {
 		if (iframe.visible) {
 			iframe.setVisible(false);
@@ -87,6 +89,8 @@
 			handleAnswer();
 		}
 	}
+
+	// Searches for the answer to the current question
 	async function handleAnswer() {
 		if (disabled) return;
 		iframe.setVisible(true);
@@ -123,9 +127,12 @@
 		removeOverlays();
 	}
 
+	// Removes all pop up dialogs on the loaded page
 	function removeOverlays() {
 		const removeOverlaysInterval = setInterval(function () {
-			let overlays = iframe.iframe.contentWindow.document.body.querySelectorAll("#ez-cookie-dialog-wrapper, #ezodn, #connatix, #google, #wpd-bubble-wrapper");
+			let overlays = iframe.iframe.contentWindow.document.body.querySelectorAll(
+				"#ez-cookie-dialog-wrapper, #ezodn, #connatix, #google, #wpd-bubble-wrapper"
+			);
 			overlays.forEach((item) => item.remove());
 			if (overlays.length > 0) {
 				clearInterval(removeOverlaysInterval);
@@ -142,7 +149,6 @@
 		refreshAnswer();
 	};
 	function refreshAnswer() {
-		console.log("RefreshAnswer()");
 		setTimeout(() => {
 			handleAnswer();
 		}, 1000);
