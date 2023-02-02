@@ -8,12 +8,11 @@
 	class IFrame {
 		iframe = null;
 		visible = false;
-		disabled = false;
+		enabled = true;
 
 		constructor(src = undefined, visible = false) {
 			this.iframe = document.createElement("iframe");
-			this.iframe.style =
-				"position: fixed; bottom: 5vw; left: 50%; width: 700px; height: 200px; transform: translate(-50%,0); border: 1px solid #777; background: #fff;";
+			this.iframe.style = "position: fixed; bottom: 65px; right: 40px; width: 700px; height: 40vh; border: 1px solid #777; background: #fff;";
 			if (src) this.setSource(src);
 			if (visible) this.setVisible(visible);
 		}
@@ -22,11 +21,20 @@
 			this.iframe.src = src;
 		}
 
+		setEnabled(enabled) {
+			this.enabled = enabled;
+			if (!this.enabled) {
+				this.setVisible(false);
+			}
+		}
+
 		setVisible(visible) {
-			if (!this.disabled) {
+			if (this.enabled) {
 				this.visible = visible;
 				if (visible) document.body.appendChild(this.iframe);
 				else this.iframe.parentNode.removeChild(this.iframe);
+			} else {
+				this.iframe.parentNode.removeChild(this.iframe);
 			}
 		}
 	}
@@ -88,10 +96,9 @@
 
 	// Searches for the answer to the current question
 	async function handleAnswer() {
-		if (iframe.disabled) return;
+		if (!iframe.enabled) return;
 		iframe.setVisible(true);
 		let cache = "";
-		let str;
 		try {
 			iframe.setSource(URLObjectFromHTML(netacad.CISCOgetQuestion()));
 			if (cache.indexOf(netacad.CISCOgetQuestion()) == -1) {
@@ -105,7 +112,7 @@
 
 				cache = (await httpRequest(url, "GET")).responseText; // load the page with answers
 
-				/* remove bottom overlay */
+				/* remove trackers */
 				let dp = new DOMParser();
 				let doc = dp.parseFromString(cache, "text/html"); // parse the html
 				doc.querySelectorAll("span").forEach((x) => {
@@ -117,16 +124,59 @@
 				cache = "<html>" + doc.documentElement.innerHTML + "</html>";
 
 				/* jumo to element with the answer */
-				let idx = cache.indexOf(netacad.CISCOgetQuestion()); // find the answer
-				str = insertStringAtIdx(idx, cache, `<p id="jumphere"></p>`); // add an element to jump to
-				str += `<script>window.location.hash="jumphere"</script>`; // jump to the element
-				iframe.setSource(URLObjectFromHTML(str));
+				let target = netacad.CISCOgetQuestion();
+				let idx = cache.indexOf(target);
+				while (idx != -1) {
+					cache = insertStringAtIdx(idx, cache, `<p id="jumphere"></p>`); // add an element to jump to
+					idx = cache.indexOf(target, idx + target.length);
+				}
+
+				cache += `<script>window.location.hash="jumphere"</script>`; // jump to the element
+				iframe.setSource(URLObjectFromHTML(cache));
 			}
 		} catch (error) {
 			str = `${error.name}<br>${error.message}`;
 		}
 
+		autofill(cache);
 		removeOverlays();
+	}
+
+	function autofill(cache) {
+		if (!iframe.enabled) return;
+		try {
+			let dp = new DOMParser();
+			let doc = dp.parseFromString(cache, "text/html");
+
+			let startElement = doc.querySelector("#jumphere");
+			let answers = null;
+
+			// Loop through all the sibling elements of the start element
+			let nextElement = startElement.nextElementSibling;
+			while (nextElement) {
+				if (nextElement.nodeName === "UL") {
+					answers = nextElement;
+					nextElement = false;
+				}
+				nextElement = nextElement.nextElementSibling;
+			}
+
+			let correctAnswers = answers.querySelectorAll(".correct_answer");
+			let currentQuestionElement = document.querySelector(".question, :not(.hidden)");
+			correctAnswers.forEach((item) => {
+				var questionElements = currentQuestionElement.querySelectorAll("*");
+				var matchingElements = [];
+				for (var i = 0; i < questionElements.length; i++) {
+					if (questionElements[i].innerHTML.includes(item.innerHTML)) {
+						matchingElements.push(questionElements[i]);
+						questionElements[i].click();
+					}
+				}
+				console.log(matchingElements);
+			});
+		} catch (error) {
+			console.log("failed autofill: " + error);
+		}
 	}
 
 	// Removes all pop up dialogs on the loaded page
@@ -175,7 +225,7 @@
 	document.addEventListener("keypress", (k) => {
 		if (k.key == ".") handleActivation();
 		else if (k.key == "p") {
-			iframe.disabled = iframe.disabled ? false : true;
+			iframe.setEnabled = iframe.enabled ? false : true;
 			handleActivation();
 		}
 	});
