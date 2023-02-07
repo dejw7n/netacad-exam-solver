@@ -1,0 +1,661 @@
+td.title1td {
+	text-align: left;
+	background-color: #ffffff;
+	vertical-align: middle;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 14px;
+	font-weight: bolder;
+	color: #336699;
+	background-image: url(/themes/rapport/images/filter_center.gif);
+}
+td.breadcrumb {
+	text-align: center;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #999999;
+	background-image: url(/themes/rapport/images/tab_mid.gif);
+}
+a.breadcrumb {
+	text-align: center;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #336699;
+}
+td.breadcrumb_active {
+	text-align: center;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #336699;
+	background-image: url(/themes/rapport/images/tab_mid_active.gif);
+}
+td.title2td {
+	text-align: left;
+	background-color: #ffffff;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	color: #336699;
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+td.title2tditemFB {
+        text-align: left;
+        background-color: #ffffff;
+        font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+        font-size: 20px;
+        font-weight: normal;
+        color: #336699;
+        padding-top: 15px;
+        padding-left: 10px;
+        padding-right: 15px;
+}
+td.title3td {
+        text-align: left;
+        background-color: #ffffff;
+        font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        color: #336699;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 5px;
+	padding-bottom: 5px;
+}
+
+.basealttitle{
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #a4279a;
+	}
+
+.copyright {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #1D4051;
+}
+
+div.contentdiv {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+	text-align: center;
+	width: 980px;
+	background-color: #ffffff;
+	display: block;
+	position: relative;
+}
+td.oddrow {
+	border-bottom: 1px solid #d1dded;
+	background-color: #fafafa;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+}
+td.evenrow {
+	border-bottom: 1px solid #d1dded;
+	background-color: #EAEFF2;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+}
+td.header2 {
+	border-bottom: 1px dashed #dcdcdc;
+	border-top: 1px solid #d1dded;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #668DC4;
+	background-color: #EEF2F5;
+}
+td.header2_cps {
+	border-bottom: 1px dashed #dcdcdc;
+	border-top: 1px solid #d1dded;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #668DC4;
+	background-color: #EEF2F5;
+	vertical-align: top;
+}
+a.cps_link {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	color:#668DC4;
+	text-decoration:underline;
+	font-weight:bold;
+	cursor:pointer;
+}
+td.header3_cps {
+	border-bottom: 1px dashed #dcdcdc;
+	border-top: 1px solid #d1dded;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #336699;
+	background-color: #AFC2DA;
+	vertical-align: top;
+}
+td.header3b_cps {
+	border-bottom: 1px dashed #dcdcdc;
+	border-top: 1px solid #d1dded;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+	background-color: #AFC2DA;
+	vertical-align: center;
+}
+td.oddrow_cps {
+	border-bottom: 1px solid #d1dded;
+	background-color: #ffffff;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #336699;
+	vertical-align: top;
+}
+td.evenrow_cps {
+	border-bottom: 1px solid #d1dded;
+	background-color: #EAEFF2;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #336699;
+	vertical-align: top;
+}
+td.oddrow_b_cps {
+	border-bottom: 1px solid #d1dded;
+	background-color: #ffffff;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #336699;
+	vertical-align: center;
+}
+td.evenrow_b_cps {
+	border-bottom: 1px solid #d1dded;
+	background-color: #EAEFF2;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #336699;
+	vertical-align: center;
+}
+th.cps_iip_goldilocks {
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;color:#000000;
+	text-decoration:none;
+	font-weight:bold;
+}
+td.summary_table_cps {
+	padding-left:2.5em;
+	}
+
+td.bottomrow {
+	border-bottom: 1px solid #dcdcdc;
+}
+td.header1 {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #ffffff;
+	background: #336699 url(/themes/rapport/images/header_mid.gif) repeat-x;
+}
+
+td.header3 {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #B1C1D4;
+}
+td.tableleft {
+	background: url(/themes/rapport/images/tableborder_left.gif) repeat-y;
+}
+td.tableright {
+	background: url(/themes/rapport/images/tableborder_right.gif) repeat-y;
+}
+td.tablebot {
+	background: url(/themes/rapport/images/tableborder_bot.gif) repeat-x;
+}
+
+a.clink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#1AAAE2;font-weight:normal;cursor:pointer;}
+a.navlink {color:#336699;text-decoration:underline;font-weight:normal;cursor:pointer;}
+a.headerlink {color:#ffffcc;text-decoration:underline;font-weight:normal;cursor:pointer;}
+
+.dottedline {border-bottom: 1px dotted #cccccc;text-decoration:none;} 
+.dotted{border-top: 1px dotted #C0C0C0;text-decoration:none;}
+.nodotted {border:none;}
+.printlink {color:#ffffff;text-decoration:underline;font-weight:normal;cursor:pointer;}
+
+#questions {
+	position: absolute;
+}
+fieldset{
+	border:0;
+}
+
+fieldset.questionFieldset{
+	margin: 0;
+	padding: 0;
+}
+
+fieldset.questionFieldset legend{
+	width: 100%; 
+}
+
+.questionNum {
+	color: #666666;
+	font-size: 18px;
+	vertical-align: top;
+	width: 25px;
+	display:inline-block;
+}
+
+.questionText {
+	white-space: normal;
+	display:inline-block;
+}
+
+.questionNum a {
+	color: #666666 !important;
+}
+
+.questionContent {
+	width: 743px;
+}
+
+#questions > .content > div {
+	position: absolute;
+	overflow: hidden;
+}
+
+#questions .questionFieldset .DragDropMatching{
+	margin: 1em;
+}
+
+td {
+	vertical-align: top;
+}
+
+input[type="radio"], input[type="checkbox"] {
+	margin: 5px;
+	padding: 0;
+}
+
+.svOption
+{
+	float:none;
+}
+
+.ptControls {
+	font-size: 12px;
+	font-weight: 400;
+	margin-bottom: 10px;
+}
+
+.ptSkipped {
+	font-size: 12px;
+	padding: .3em;
+}
+
+body.cui .btn.btn--primary-ghost.ptShow, body.cui .btn.btn--primary-ghost.ptHide {
+	margin-top: 4px;
+}
+
+.ptShowRollover, .ptHideRollover, .skipRollover, .ptStatus, .ptError {
+	margin-top: 10px;
+	padding: .3em;
+}
+
+.surveyHeader{
+	border-bottom: 1px solid #EDEDED;
+	color: #666666;
+	font-size: 18px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.ai-stem > .material-text{
+	max-width: 90%;
+}
+
+.ai-stem .material-image ~ .material-text{
+	min-width: 100%;
+}
+
+.ai-stem > .pt-controls-container{
+	min-width: 100%;
+}
+
+.ai-stem {
+	border-bottom: 1px solid #EDEDED;
+	color: #666666;
+	font-size: 18px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+.ai-stem [data-matpt-ident]{
+	white-space: normal;
+	min-width: 100%;
+	max-width: 100%;
+}
+
+.ai-stem .DragDropMatching {
+	white-space: normal;
+	max-width: 100%;
+}
+
+.ai-stem .questionNum {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: .5em;
+	flex: 0;
+	max-width: 10%;
+}
+
+.ai-stem .questionText {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: .5em;
+	flex: 1;
+	max-width: 90%;
+}
+
+.ai-stem .DragDropMatching .card {
+	word-wrap: break-word;
+}
+
+.ai-question-number{
+	display: inline-block;
+	vertical-align: top;
+	margin-right: .5em;
+	flex: 0;
+	max-width: 10%;
+	
+}
+
+[dir="rtl"] .ai-question-number{
+	margin-left: .5em;	
+}
+
+.testlet-question-number {
+	display: inline;
+	margin-right: .5em;
+	vertical-align: top;
+}
+
+[dir="rtl"] .testlet-question-number{
+	margin-left: .5em;	
+}
+
+.ai-option, .testlet-option {
+	font-size: 12px;
+	color: #707070;
+	cursor: pointer;
+	padding: 5px;
+	margin-bottom: .75em;
+	display:inline-block;
+}
+
+.testlet-option {
+	font-size: 12px;
+	color: #707070;
+	display: block;
+	cursor: pointer;
+	padding: 5px;
+	display:inline;
+}
+
+label.ai-option {
+	display: block;
+	cursor: pointer;
+}
+
+label.ai-option:hover {
+	background-color: #F4F6FA;
+}
+
+img.tick {
+	margin-top: 5px;
+}
+
+.ai-option input[type="radio"], .ai-option input[type="checkbox"], .ai-option-label input[type="radio"], .ai-option-label input[type="checkbox"]{
+	align-self: flex-start;
+}
+
+/* Old theme (ccna3theme) stuff starts here */ 
+.apptitle {font-family:Arial,Helvetica,sans-serif;font-size:29px;color:#000000;text-decoration:none;font-weight:bold;}
+.apptitlechild {position:relative;top:4px;font-family:Arial,Helvetica,sans-serif;font-size:19px;color:#003333;text-decoration:none;font-weight:bold;}
+.apphinavpeer {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.apphinavchild {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:none;font-weight:normal;}
+.apphinavchildlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:underline;font-weight:normal;}
+.appnavbutton {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.appnavbuttoninactive {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;text-decoration:none;font-weight:normal;}
+.appnavbuttonalt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.appnavbuttonlink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;text-decoration:underline;font-weight:normal;}
+.appnavcurrent {font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000000;text-decoration:none;font-weight:bold;}
+.appnavtext {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:none;font-weight:normal;}
+.appnavtextalt {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:none;font-weight:normal;}
+.appnavlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:underline;font-weight:normal;}
+.applink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:underline;font-weight:normal;}
+.applabel {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:none;font-weight:normal;}
+.apptitlerevlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#ffffff;text-decoration:underline;font-weight:bold;}
+
+.appnavbuttonprev {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#ffffff;text-decoration:none;font-weight:normal;}
+.appnavsubmitlink {font-family:Arial,Helvetica,sans-serif;color:#669999;text-decoration:underline;font-weight:normal;}
+
+.appstablecolorplain { background-color:#ffffff; }
+.appstablecolor { background-color:#669999; }
+.appstablecolornav { background-color:#669999; }
+.appstablecolorinactive { background-color:#999999; }
+.appstablecoloralt { background-color:#336666; }
+.appstablecolorsecondary { background-color:#99cccc; }
+.appstablecolortertiary { background-color:#cccccc; }
+.appstablecoloralert { background-color:#990000; }
+.appstablecolorbkground { background-color:#ffffcc; }
+.appstableheader { background-color:#336666; }
+.appsbuttonprev { background-color:#669999; }
+.appsbuttontop { background-color:#99cccc; }
+.appsbuttonbtm { background-color:#003333; }
+.appsbuttonnext { background-color:#cccccc; }
+
+.select { background:#ffffff;color: #003333;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold; }
+
+.secondarynav {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003333;text-decoration:none;font-weight:normal;}
+.secondarynavbold {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003333;text-decoration:none;font-weight:bold;}
+.secondarynavgray {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:gray;text-decoration:none;font-weight:normal;}
+
+.pathnavhistory {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:underline;font-weight:normal;}
+.pathnavlink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#666666;text-decoration:underline;font-weight:normal;}
+.pathnavulink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#999999;text-decoration:underline;font-weight:normal;}
+.pathnavcurrent {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+.pathnavsymbol {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+
+.hinavparent {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#ffffff;text-decoration:none;font-weight:normal;}
+.hinavpeer {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.hinavchild {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+
+.footerareas {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:underline;font-weight:normal;}
+.footertext {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+.footerlink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:underline;font-weight:normal;}
+
+.tools {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;text-decoration:none;font-weight:normal;}
+.toolsinactive {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#999999;text-decoration:none;font-weight:normal;}
+.toolslinks {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;text-decoration:underline;font-weight:normal;}
+
+
+.reltext {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.relheader {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:bold;}
+.reltitle {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;text-decoration:none;font-weight:bold;}
+.relboldlink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:underline;font-weight:bold;}
+.rellink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:underline;font-weight:normal;}
+
+.featuretitle {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:bold;}
+.featuretext {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:normal;}
+.featurelink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:underline;font-weight:normal;}
+
+H1, .contenttitle {font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#000000;text-decoration:none;font-weight:bold;}
+H2, .contenttitlealt {font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#336666;text-decoration:none;font-weight:bold;}
+.contenttitlesub {font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#000000;text-decoration:none;font-weight:normal;}
+.contenttitlerev {font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#ffffff;text-decoration:none;font-weight:bold;}
+.contentheader {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:none;font-weight:bold;}
+H3, .contentheaderalt {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a4279a;text-decoration:none;font-weight:bold;}
+.contentheaderrev {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#ffffff;text-decoration:none;font-weight:bold;}
+.contentheaderrevlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#ffffff;text-decoration:underline;font-weight:bold;}
+.contentheaderlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:underline;font-weight:bold;}
+P, TH, TD, UL, .content {font-family:Arial,Helvetica,sans-serif;font-size:12px;text-decoration:none;font-weight:normal;}
+H4, .contentbold {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:none;font-weight:bold;}
+.contentlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:underline;font-weight:normal;}
+.contentboldlink {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#003399;text-decoration:underline;font-weight:bold;}
+.contentlinkalt {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000000;text-decoration:underline;font-weight:normal;}
+.contentlabel {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.contentlabellink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:underline;font-weight:normal;}
+.contentlabelalt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:normal;}
+.contentdynamic {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.contentnoteheader {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#990000;text-decoration:none;font-weight:bold;}
+
+
+
+.caption {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+.captionlink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#003399;text-decoration:underline;font-weight:normal;}
+
+.code {font-family:Courier-New,courier;font-size:12px;color:#000000;text-decoration:;font-weight:normal;}
+
+.button {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+.buttonlink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:underline;font-weight:normal;}
+
+B {font-weight:bold;}
+I {text-decoration:italics;}
+
+.modulecaptionlink {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#003399;text-decoration:underline;font-weight:normal;}
+.moduletitlerevlink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;text-decoration:underline;font-weight:bold;}
+.moduletitlerev {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#ffffff;text-decoration:none;font-weight:bold;}
+.moduletitle {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:bold;}
+.modulecolumn {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:bold;}
+.modulecontent {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.modulecontentlink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:underline;font-weight:normal;}
+.modulecontentbold {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:bold;}
+.modulecontentboldlink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:underline;font-weight:bold;}
+.modulesection {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.modulecaption {font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#000000;text-decoration:none;font-weight:normal;}
+
+.status {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.statusalt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.statusheader {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:bold;}
+.statusheaderalt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#990000;text-decoration:none;font-weight:bold;}
+
+.message {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:normal;}
+.messagealt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:bold;}
+.messagelink {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#003399;text-decoration:none;font-weight:normal;}
+.messageheader {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#336666;text-decoration:none;font-weight:bold;}
+.messageheaderalt {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#000000;text-decoration:none;font-weight:bold;}
+.alertheader {font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#990000;text-decoration:none;font-weight:bold;}
+
+.errortext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #9C0000;
+}
+.profileMargin {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.beginDiv {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 200px;
+	height: 25px;
+	z-index: 3;
+	background-color:#FFFFFF;
+	layer-background-color:#FFFFFF;
+}
+
+.appsnavbordercolor { background-color:#336666; }
+.appsnavlinecolor { background-color:#003333; }
+.appsnavcolor { background-color:#999999; }
+.appsnavcolorsecondary { background-color:#cccccc; }
+.appsnavcolorselected { background-color:#ffffff; }
+
+.material-text{
+	white-space:normal;
+}
+
+.rTableOptionRow{ 
+	position: relative;
+	width: auto;
+	padding-left:11px;
+	padding-right:11px;
+}
+.rTableOptionCell{
+	display: table-cell;
+	vertical-align: top;
+}
+
+.rTableRow{ 
+	display: table-row; 
+}
+ .qNum{
+ 	display: table-cell;
+	position: relative;
+	color: #666666;
+	vertical-align: top;
+	width: auto;
+}
+.coreContent{
+	flex: 1;
+	position: relative;
+	padding-top: 0;
+	padding-left:12px;
+	padding-right:12px;
+}
+
+.coreContent li{
+	display: block;
+}
+
+span.correct-response-header {
+	display:inline-block;
+	min-width: 5em;
+	padding-right:1em;
+	white-space:nowrap;
+}
+
+span.correct-response {
+	display:inline-block;
+	min-width: 5em;
+	padding-right:1em;
+	text-align: right;
+	vertical-align: top;
+}
+span.your-response-header {
+	display:inline-block;
+	white-space:nowrap;
+}
+
+span.your-response {
+	display:inline-block;
+	white-space:nowrap;
+	margin-bottom: .75em;
+}
+
+.htable{
+	width:768; 
+	padding:11px;
+}

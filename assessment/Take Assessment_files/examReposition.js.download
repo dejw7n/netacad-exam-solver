@@ -1,0 +1,411 @@
+/*
+Revision 0219 - Added line in FIB & SVTXT to replace '+' with a space
+*/
+// Added to support on-demand item loading
+function repositionQuestion(id, showAnswers){
+
+  for (var i = 1; i <= Question.index; i++) {
+    if (id == Question[i].id) {
+      if (Question[i].type == "MCMA"){
+        eval('subform = window.document.'+Question[i].id);
+        if (subform.elements != null) {
+          for (var k = 0; k < subform.elements.length; k++) {
+            subform.elements[k].checked = false; 
+          } // end if checked grab value
+        }
+      }
+    }
+  } // end loop thru questions to clear checkboxes
+
+  for (var i = 0; i< prev_name.length; i++) {
+    var found = false;
+    for (var j = 1; !found && j <= Question.index; j++) {
+      var questionRef = Question[j];
+      if (id == questionRef.id) {
+        if (questionRef.response_id == prev_name[i]) {
+          found = true;
+          if (questionRef.type == "FIB" && showAnswers) {
+            eval('subform = window.document.' + questionRef.id);
+            var value = prev_value[i];
+            var index = value.indexOf("=");
+            if (index > -1 ) { 
+              value = value.replace(/\+/g, "%20"); // replace '+' with %20 (i.e. space)
+              //subform.elements[0].value = unescape(value.substr(index+1));
+              // When PT controls are added to the stem,
+              // the first blank is no longer the first element.
+              value = unescape(value.substr(index+1));
+              var inputs = jQuery('input[type=text]', subform);
+              if (inputs.length) {
+                inputs.first().val(value);
+              }
+              var textareas = jQuery('textarea', subform);
+              if (textareas.length) {
+                textareas.first().val(value);
+              }
+            }
+          } else if ((questionRef.type == "TF" || questionRef.type == "MCSA" || questionRef.type == "SVRAT") && showAnswers) {
+            eval('subform = window.document.'+ questionRef.id);
+            var value = prev_value[i];
+            var index = value.indexOf("=");
+            value = value.substr(index+1); // exclude = from value string
+            if (index > -1) { 
+              // If display type is a dropdown list, else assume default radio buttons
+              if (questionRef.display == "dropdown") {
+                var selectRef = subform[questionRef.response_id];
+                for (var k = 0; k < selectRef.options.length; k++) {
+                  if (selectRef.options[k].value == value) { 
+                    selectRef.options[k].selected = true;
+                  } // if value matches subform value then select it
+                } // end loop thru elements to match
+              } else {
+                for (var k = 0; k < subform.elements.length; k++) {
+                  if (subform.elements[k].value == value) { 
+                    subform.elements[k].checked = true;
+                  } // if value matches subform value then check it
+                } // end loop thru elements to match
+              }
+            } // end if non-null
+          } else if (questionRef.type == "MCMA" && showAnswers) {
+            eval('subform = window.document.'+ questionRef.id);
+            var value = prev_value[i];
+            var index = value.indexOf("=");
+            var replace = value.substr(index+1);
+            if (index > -1 && replace != "") { 
+              for (var k = 0; k < subform.elements.length; k++) {
+                if (subform.elements[k].value == replace) { 
+                  subform.elements[k].checked = true; // check box if values match and not null
+                } // end if values match and not null
+              } // end loop thru subform elements
+            } // end if non-null    
+          } else if (questionRef.type == "SVTXT" && showAnswers) {
+            eval('subform = window.document.'+ questionRef.id);
+            var value = prev_value[i];
+            var index = value.indexOf("=");
+            if (index > -1) { 
+              value = value.replace(/\+/g, "%20"); // replace '+' with %20 (i.e. space)
+              subform.elements[0].value = unescape(value.substr(index+1)); // grab text value
+            }
+          } else if (questionRef.type == "SSI" || questionRef.type == "SST") {
+            var respLabels = questionRef.response_labels;
+            var value = prev_value[i];
+            var splitVal = value.split("=");
+            var observableName = splitVal[0];
+            var observableValue = splitVal.slice(1).join("=");
+            for (var k = 0; k< respLabels.length; k++) {
+              if (respLabels[k] == observableName) {
+                if (observableValue == " " || observableValue == "null") {
+                  observableValue = "";
+                }
+                questionRef.response_array[k] = observableValue;
+              } // end if label found
+            } // loop thru labels to match
+          }
+        } // end if Question identified for previous response name
+      }
+    } // end for loop thru Questions
+  } // end for loop thru previous responses
+
+  for (var i = 1; i <= Question.index; i++) {
+    var qRef = Question[i];
+    if (id == qRef.id) {
+      if (qRef.type == "SSI" || qRef.type == "SST") {
+        writeFlashAsmt(i);
+      }
+    }
+  }
+
+  // reposition testlet subitems
+  var questionRef = Question[id];
+  if (questionRef.type == "Passage") {
+    for (var i = 0; i < questionRef.testletChildren.length; i++) {
+      var childID = questionRef.testletChildren[i];
+      repositionQuestion(childID, showAnswers);
+    }
+  }
+  
+  var firstInput = document.querySelector("[name=" + questionRef.id + "] .item-long-description");
+  var firstTestletInput = document.querySelector(".question:not(.hidden) .testlet-container input");
+  var firstDndInput = $(".question:not('.hidden') .options-list div[role=listitem]:first");
+  if (firstInput) { 
+	  firstInput.focus();
+  } else if (firstTestletInput){
+		  firstTestletInput.focus();
+  } else if (firstDndInput){
+		  firstDndInput.focus();
+  }
+  
+  
+  // Highlight JS for syntax highlighting
+  if (hljs){
+	  var codeElements = document.querySelectorAll(".question:not(.hidden) code");
+	  if (codeElements.length > 0){
+		  $(codeElements).each(function(index, codeElement){
+			  hljs.highlightBlock(codeElement);  
+			  var html = $(codeElement).html();
+			  var pattern = html.match(/\s*\n[\t\s]*/);
+			  $(codeElement).html(html.replace(new RegExp(pattern, "g"),'\n'));  
+		  });
+	  }
+  }
+  
+} // end reposition question function
+
+
+function reposition(showAnswers){
+
+	for (var i=1; i<= Question.index; i++) {
+    	if (Question[i].type == "MCMA"){
+	    	eval('subform = window.document.'+Question[i].id);
+	    	if (subform.elements != null) {
+	    		for (var k=0; k < subform.elements.length; k++){
+	    			subform.elements[k].checked = false; 
+	    		} // end if checked grab value
+	    	}
+        }
+    } // end loop thru questions to clear checkboxes
+
+    for (var i=0; i< prev_name.length; i++){
+        var found = false;
+        for (var j=1; !found && j<= Question.index; j++) {
+            var questionRef = Question[j];
+            if (questionRef.response_id == prev_name[i]){
+                found = true;
+                if (questionRef.type == "FIB" && showAnswers){
+	        		eval('subform = window.document.'+ questionRef.id);
+                    var value = prev_value[i];
+                    var index = value.indexOf("=");
+                    if ( index > -1 ) { 
+                        value = value.replace(/\+/g, "%20"); // replace '+' with %20 (i.e. space)
+                        //subform.elements[0].value = unescape(value.substr(index+1));
+                        // When PT controls are added to the stem,
+                        // the first blank is no longer the first element.
+                        value = unescape(value.substr(index+1));
+                        var inputs = jQuery('input[type=text]', subform);
+                        if (inputs.length) {
+                        	inputs.first().val(value);
+                        }
+                        var textareas = jQuery('textarea', subform);
+                        if (textareas.length) {
+                        	textareas.first().val(value);
+                        }
+                    }
+                }
+                else if ((questionRef.type == "TF" || questionRef.type == "MCSA" || questionRef.type == "SVRAT") && showAnswers){
+	        		eval('subform = window.document.'+ questionRef.id);
+                    var value = prev_value[i];
+                    var index = value.indexOf("=");
+                    value = value.substr(index+1); // exclude = from value string
+                    if ( index > -1 ){ 
+                        // If display type is a dropdown list, else assume default radio buttons
+                        if (questionRef.display == "dropdown") {
+                            var selectRef = subform[questionRef.response_id];
+                            
+                            for (var k=0; k < selectRef.options.length; k++) {
+                                if (selectRef.options[k].value == value) { 
+                                    selectRef.options[k].selected = true;
+                                } // if value matches subform value then select it
+                            } // end loop thru elements to match
+                        }
+                        else {
+                            for (var k=0; k < subform.elements.length; k++){
+                                if (subform.elements[k].value == value) { 
+                                    subform.elements[k].checked = true;
+                                } // if value matches subform value then check it
+                            } // end loop thru elements to match
+                        }
+                    } // end if non-null
+                }
+                else if (questionRef.type == "MCMA" && showAnswers) {
+	        		eval('subform = window.document.'+ questionRef.id);
+                    var value = prev_value[i];
+                    var index = value.indexOf("=");
+                    var replace = value.substr(index+1);
+                    
+                    if ( index > -1 && replace != ""){ 
+                        for (var k=0; k < subform.elements.length; k++){
+                            if (subform.elements[k].value == replace) { 
+                                subform.elements[k].checked = true; // check box if values match and not null
+                            } // end if values match and not null
+                        } // end loop thru subform elements
+                    } // end if non-null    
+                } // end MCMA type
+                else if (questionRef.type == "SVTXT" && showAnswers){
+	        		eval('subform = window.document.'+ questionRef.id);
+                    var value = prev_value[i];
+                    var index = value.indexOf("=");
+                    if ( index > -1 ){ 
+                        value = value.replace(/\+/g, "%20"); // replace '+' with %20 (i.e. space)
+                        subform.elements[0].value = unescape(value.substr(index+1)); // grab text value
+                    }
+                } // end SVTXT type
+                else if (questionRef.type == "SSI" || questionRef.type == "SST") {
+                    var respLabels = questionRef.response_labels;
+                    var value = prev_value[i];
+                    var splitVal = value.split("=");
+                    var observableName = splitVal[0];
+                    var observableValue = splitVal.slice(1).join("=");
+                    for (var k=0; k< respLabels.length; k++) {
+                        if ( respLabels[k] == observableName ) {
+                        	if (observableValue == " " || observableValue == "null") {
+                        		observableValue = "";
+                        	}
+                            questionRef.response_array[k] = observableValue;
+                        } // end if label found
+                    } // loop thru labels to match
+                } // end SSAI/Ts
+                
+            } // end if Question identified for previous response name
+
+        } // end for loop thru Questions
+
+    } // end for loop thru previous responses
+	
+    var i = 1;
+    while (i <= Question.index) {
+    	var qRef = Question[i];
+    	if (qRef.type == "SSI") {
+    		writeFlashAsmt(i);
+    		i++;
+    	}
+    	else if (qRef.type == "SST") {
+    		writeFlashAsmt(i);
+    		// Fast forward through all the SST within the same testlet
+    		for (j = i+1; j <= Question.index && (Question[j].type == "SST" && Question[j].groupid == qRef.groupid); j++);
+    		i = j;
+    	}
+    	else {
+    		i++;
+    	}
+    }
+
+} // end reposition function
+
+/**
+*   <!-- UNICOMMENT 
+*   Method to write the HTML for a Flash assessment item.  This includes
+*   generating and inserting the XML initialization string as needed.
+*
+*   Method:     writeFlashAsmt
+*
+*   Parameters: 
+*       content     String
+*
+*   Return: void
+*   UNICOMMENT -->
+*/
+function writeFlashAsmt(index) {
+	var Q = Question[index];
+    var xmlInit = '<assessment id="'+Q.groupid+ '"';
+    xmlInit += ' response="' + (navigator.userAgent.match(/msie/i) ? "some" : "all") + '"';
+    xmlInit += ' callback="setItemResponse" theme="html"';
+    xmlInit += ' interface="' + flashInterface +'"'
+    xmlInit += ' interactive="' + flashInteractive + '"';
+
+    if (typeof(flashLanguage) != "undefined") {
+    	xmlInit += ' prefix="' + flashPrefix + flashLanguage + '/"';
+    } else {
+    	xmlInit += ' prefix="' + flashPrefix + '"';
+    }
+    if (typeof(showCorrectResponses) != "undefined") {
+    	xmlInit += ' showCorrectResponses="' + showCorrectResponses + '"';
+    }
+    
+    //Get the value of the session from the cookie
+    
+	cookieVal = "";
+    var SLIX = null;
+	if (window.SLIX) { // if already defined in vm
+		SLIX = window.SLIX;
+	} else { // otherwise, try query string
+		SLIX = getSLIX(location.search);
+	}
+	if (SLIX) {
+		cookieVal = SLIX;
+	} else {
+		allCookies = new Array();
+		allCookies = document.cookie.split('; ');
+		for(a = 0; a < allCookies.length; a++){
+			NameVal  = new Array();
+			NameVal  = allCookies[a].split('=');
+			if(NameVal[0] == 'vds-cookie'){
+				cookieVal = unescape(NameVal[1]);
+			}
+		}
+	}
+
+	xmlInit += ' session="' + cookieVal + '">';
+    //xmlInit += ' session="' + window.document.page.SESSION_ID.value + '">';
+    
+	var obsString = "";
+    if (Q.type == "SSI") {
+    	xmlInit += '<item id="' + Q.id + '">';
+    	for (i = 1; i < Q.response_labels.length; i++) {
+    		if (Q.response_array[i].length > 0) {
+    			obsString += '<observable name="' + Q.response_labels[i] + '">';
+    			obsString += Q.response_array[i];
+    			obsString += '</observable>';
+    		}
+    	}
+    	xmlInit += obsString + '</item>';
+    }
+    else {  // Testlet
+    	var itemString = "";
+    	for (i = index; i <= Question.index; i++) {
+    		var tI = Question[i];
+    		if (tI.groupid != Q.groupid) break;
+    		itemString += '<item id="' + tI.id + '">';
+    		obsString = "";
+    		for (j = 1; j < tI.response_labels.length; j++) {
+    			if (tI.response_array[j].length > 0) {
+    				obsString += '<observable name="' + tI.response_labels[j] + '">';
+    				obsString += tI.response_array[j];
+    				obsString += '</observable>';
+    			}
+    		}
+    		itemString += obsString + '</item>';
+    	}
+    	xmlInit += itemString;
+    }
+    xmlInit += '</assessment>';
+//    alert("Setting " + Q.groupid + "Flash.xmlInit=\n" + xmlInit);
+    xmlInit = encodeURIComponent(xmlInit);
+    setVariable(document.getElementById(Q.groupid + 'Flash'), xmlInit);
+}
+
+/**
+*   <!-- UNICOMMENT 
+*   Method to find the subform reference for a Question.  Allows multiple
+*   Text Divs to be supported.
+*
+*   Method:     findFormRef
+*
+*   Parameters: 
+*       QRef   Object Ref 
+*
+*   Return: Form Ref
+*   UNICOMMENT -->
+*/
+function findFormRef(QRef) {
+    eval('subform = window.document.'+QRef.id);
+    return subform;
+}
+
+function setVariable(flashObject, xmlInit) {
+  if (flashObject && ("SetVariable" in flashObject)) {
+    flashObject.SetVariable("xmlInit", xmlInit);
+  } else {
+	// when AJAX loading items, it's unknown when the Flash object
+	// will be ready to have SetVariable called, so just keep trying.
+    setTimeout(function() {
+      setVariable(flashObject, xmlInit);
+    }, 500);
+  }
+}
+
+function getSLIX(search) {
+  var matches = search.match(/[\?&]SLIX=([^$&#]*)/);
+  if (matches && matches.length) {
+    return matches[1];
+  }
+  return null;
+}

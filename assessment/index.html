@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)https://assessment.netacad.net/virtuoso/delivery/pub-doc/2.0/assessment/lti.1.0/exam.html -->
+<html dir="ltr" lang="en" class="cui">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<script async="" src="./Take Assessment_files/adrum-ext.206c403a1a532b310b15ea4509f4902b.js.download"></script>
+		<script type="text/javascript" async="" src="./Take Assessment_files/ga.js.download"></script>
+		<script>
+			window["adrum-start-time"] = new Date().getTime();
+			window["adrum-app-key"] = "AD-AAB-ABN-FHT";
+		</script>
+		<script src="./Take Assessment_files/adrum.js.download"></script>
+
+		<title>Take Assessment</title>
+		<link type="text/css" rel="stylesheet" href="./Take Assessment_files/style_assessment.css" />
+		<link type="text/css" rel="stylesheet" href="./Take Assessment_files/jquery-ui-custom.css" />
+		<link type="text/css" rel="stylesheet" href="./Take Assessment_files/common.css" />
+		<link type="text/css" rel="stylesheet" href="./Take Assessment_files/alerts.css" />
+
+		<link rel="stylesheet" type="text/css" href="./Take Assessment_files/dd.css" />
+
+		<link rel="stylesheet" type="text/css" href="./Take Assessment_files/default.css" />
+		<link type="text/css" rel="stylesheet" href="./Take Assessment_files/takeexam.css" />
+		<style>
+			.hidden {
+				display: none;
+				height: 0;
+				width: 0;
+			}
+		</style>
+		<script type="text/javascript" src="./Take Assessment_files/examResponse.js.download"></script>
+		<style type="text/css" id="operaUserStyle"></style>
+
+		<script type="text/javascript" src="./Take Assessment_files/examInit.js.download"></script>
+		<script type="text/javascript" src="./Take Assessment_files/examReposition.js.download"></script>
+		<script type="text/javascript" src="./Take Assessment_files/jquery-3.5.1.min.js.download"></script>
+		<script type="text/javascript" src="./Take Assessment_files/jquery-ui-1.12.1.min.js.download"></script>
+
+		<script type="text/javascript" src="./Take Assessment_files/dd.js.download"></script>
+
+		<script type="text/javascript" src="./Take Assessment_files/highlight.pack.js.download"></script>
+		<script type="text/javascript">
+			vds.cache.set("THEME", "rapport");
+			vds.cache.set("STYLE", "base");
+			vds.cache.set("LANGUAGE", "en");
+
+			vds.cache.set("SLIX", "ogbqopg7qove8njm9r1unha0u");
+
+			vds.cache.set("CLIENT_ID", "50888538");
+
+			vds.cache.set("EXAM_OF_TOTAL", "of TOTAL_PAGES");
+			vds.cache.set("CONFIRM_OK_LABEL", "OK");
+
+			vds.cache.set("previous", "Previous");
+			vds.cache.set("next", "Next");
+			vds.cache.set("answered", "Answered");
+			vds.cache.set("unanswered", "Unanswered");
+			vds.cache.set("notviewed", "Not Viewed");
+			vds.cache.set("submit", "Submit");
+
+			vds.cache.set("pt_connecting", "Connecting...");
+			vds.cache.set("pt_loading", "Loading...");
+			vds.cache.set("pt_loaded", "Loaded");
+			vds.cache.set("pt_saving", "Saving...");
+			vds.cache.set("pt_saved", "Saved");
+			vds.cache.set("pt_error", "Error");
+			vds.cache.set("pt_details_error", "Unable to retrieve details.");
+
+			vds.dom.preload("/themes/rapport/css/images/ui-bg_flat_0_eeeeee_40x100.png");
+			vds.dom.preload("/themes/rapport/css/images/ui-icons_ff0000_256x240.png");
+
+			var SLIX = "ogbqopg7qove8njm9r1unha0u"; // used by ptapi
+			var er_id = "237941740"; // used to identify window
+			var client_id = "50888538"; // used to connect to PT Player
+			var er_marker = "387A3166535573622B484C69585673426179365262413D3D"; // used to connect to PT Player
+			var pt_message = "IOLRCs7u3739xdnszePs7NPQ5efH8uv4"; // used to connect to PT Player
+
+			var PT_INITIALIZATION_STATUS = "SKIPPED";
+
+			// SSAI/T configuration parameters.
+			var flashInteractive = true;
+			var flashInterface = "learner";
+			var flashPrefix = "ssflash/";
+
+			if (window.opener && window.opener !== window) {
+				try {
+					window.opener.location.reload();
+				} catch (e) {
+					vds.logger.warn("unable to reload parent window");
+				}
+			}
+
+			var vdscore = new Core(this);
+			vdscore.init();
+
+			function init() {
+				$("#info").show();
+				$("#questions").show();
+				$("#navbarhover").show();
+				$("#navbar").show();
+				window.addEventListener(
+					"resize",
+					function (event) {
+						vds.services.renderServices.render();
+					},
+					false
+				);
+
+				vds.services.renderServices.render();
+			}
+
+			function buildQuestion(question) {
+				var nodes;
+				var element = questionsView.getElementByQuestion(question);
+				repositionQuestion("AI" + question.id, true);
+				nodes = element.querySelectorAll(".response-header.vertical");
+				for (var i = 0; i < nodes.length; i++) {
+					VerticalText.apply(nodes.item(i));
+				}
+				nodes = element.querySelectorAll("[data-matpt-ident]");
+				for (var i = 0; i < nodes.length; i++) {
+					new vds.views.PTMOView(ptapi, nodes.item(i));
+				}
+			}
+
+			function fetchQuestion(question) {
+				if (!question || !questionsView) {
+					return;
+				}
+
+				vds.logger.debug("fetch question #" + question.number + " [" + question.id + "]");
+				question.setLoading(true);
+				var url = "/virtuoso/delivery/pub-doc/2.0/single_exam_question.html";
+				var element = questionsView.getElementByQuestion(question);
+				element.classList.add("loading");
+				var data = {
+					SLIX: "ogbqopg7qove8njm9r1unha0u",
+
+					THEME: "rapport",
+					STYLE: "base",
+					LANGUAGE: "en",
+					QUESTION_NUMBER: question.number,
+				};
+				vds.tasks.add(function (callback) {
+					vds.logger.debug("fetching question #" + question.number + " [" + question.id + "]");
+					jQuery.ajax({
+						type: "POST",
+						url: url,
+						data: data,
+						timeout: 10000,
+						success: function (data) {
+							vds.logger.debug("fetched question #" + question.number + " [" + question.id + "]");
+							$(element).html(data);
+							element.classList.remove("loading");
+							question.setLoading(false);
+							question.setLoaded(true);
+							buildQuestion(question);
+
+							callback();
+						},
+						error: function () {
+							vds.logger.error("unable to fetch question #" + question.number + " [" + question.id + "]");
+							$(".question.loading").addClass("hidden");
+							$(".question.loading").removeClass("loading");
+							$("#error-dialog").dialog("open");
+							question.setLoading(false);
+							callback();
+						},
+					});
+				});
+			}
+
+			var questionsView;
+			var assessment = new vds.models.Assessment();
+
+			function buildQuestionInfo(data) {
+				for (var i = 0; i < data.length; i++) {
+					var datum = data[i];
+					var id = datum.id.substring(datum.id.indexOf("-") + 1);
+					var question = new vds.models.Question(i + 1, id, datum.type, datum.hasResponse, datum.hasPtmo);
+					assessment.addQuestion(question);
+				}
+				assessment.addEventListener("beforechange", function (event) {
+					var question = assessment.getCurrent();
+					if (question && question.isLoaded()) {
+						vds.services.responseService.sendResponses(question, false);
+					}
+					if (ptapi.isLoaded()) {
+						ptapi.unloadPTItem();
+					}
+				});
+				assessment.addEventListener("change", function (event) {
+					var question = assessment.getCurrent();
+					var data = {
+						SLIX: "ogbqopg7qove8njm9r1unha0u",
+					};
+
+					jQuery.getJSON("/virtuoso/delivery/pub-doc/services/xapi/question/" + question.id, data, function (data) {});
+					if (!question.isLoading() && !question.isLoaded()) {
+						fetchQuestion(question);
+					}
+				});
+				var infoView = new vds.views.InfoView(assessment, document.getElementById("info"));
+				var navBarView = new vds.views.NavBarView(assessment, document.getElementById("navbar"));
+				questionsView = new vds.views.QuestionsView(assessment, document.getElementById("questions"));
+				assessment.setCurrent(assessment.firstQuestion);
+			}
+
+			function fetchQuestionInfo() {
+				vds.logger.debug("fetch question info");
+				vds.tasks.add(function (callback) {
+					vds.logger.debug("fetching question info");
+					jQuery.ajax({
+						dataType: "json",
+						url: "/virtuoso/delivery/pub-doc/services/assessment/item/summary",
+						type: "GET",
+						data: {
+							SLIX: "ogbqopg7qove8njm9r1unha0u",
+						},
+						success: function (data) {
+							vds.logger.debug("fetched question info");
+							buildQuestionInfo(data);
+							init();
+							callback();
+						},
+						error: function () {
+							vds.logger.error("unable to fetch question info");
+							$("#error-dialog").dialog("open");
+							callback();
+						},
+					});
+				});
+			}
+
+			$(document).ready(function () {
+				$("#info").hide();
+				$("#questions").hide();
+				$("#navbarhover").hide();
+				$("#navbar").hide();
+				$("#error-dialog").dialog({
+					autoOpen: false,
+					modal: true,
+					buttons: {
+						OK: function () {
+							$(this).dialog("close");
+						},
+					},
+				});
+
+				var endTime;
+				var input = document.getElementById("end_time");
+				if (input.value != "") {
+					endTime = input.value;
+				} else {
+					endTime = Date.now() + 3269157;
+				}
+				input.value = endTime;
+				assessment.endTime = endTime;
+
+				fetchQuestionInfo();
+				$(window).unload(function () {
+					if (!assessment.submitted) {
+						var question = assessment.getCurrent();
+						if (question && question.isLoaded()) {
+							vds.services.responseService.sendResponses(question, true);
+						}
+					}
+				});
+			});
+
+			var handleRadioButtonEvent = function (event) {
+				if (event.keyCode && event.keyCode !== 32) {
+					return;
+				}
+				if (event.keyCode && event.keyCode === 32) {
+					event.preventDefault();
+				}
+
+				if (this.hasAttribute("data-radio-is-checked") && this.getAttribute("data-radio-is-checked") === "true") {
+					this.checked = false;
+					$("[name='" + this.getAttribute("name") + "']").attr("data-radio-is-checked", false);
+				} else {
+					$("[name='" + this.getAttribute("name") + "']").attr("data-radio-is-checked", false);
+					this.setAttribute("data-radio-is-checked", true);
+					this.checked = true;
+				}
+			};
+
+			$(document).on("click", "input[type='RADIO']", handleRadioButtonEvent);
+			$(document).on("keyup", "input[type='RADIO']", handleRadioButtonEvent);
+		</script>
+
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(["_setAccount", "UA-31020351-1"]);
+			_gaq.push(["_trackPageview"]);
+
+			(function () {
+				var ga = document.createElement("script");
+				ga.type = "text/javascript";
+				ga.async = true;
+				ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</head>
+	<body class="cui">
+		<div id="core" name="core" class="core">
+			<nav id="breadcrumbs">
+				<ul class="breadcrumb">
+					<li class="non-nav">Take Assessment</li>
+				</ul>
+			</nav>
+			<main>
+				<heading>
+					<input type="hidden" id="end_time" name="end_time" value="1675764754528" />
+
+					<h1 id="hdr" class="course-heading" aria-level="1">
+						<div class="course-name">Switching, Routing, and Wireless Essentials (Version 7.00) - Available and Reliable Networks Exam</div>
+
+						<div id="info" style="">
+							<div id="timer" class="ui-widget">
+								<div class="ui-icon ui-icon-clock" role="img" alt="Time Remaining" title="Time Remaining"></div>
+								<time id="timeleft">00:53:18</time>
+							</div>
+							<div id="pager" class="ui-widget">
+								<div class="ui-icon ui-icon-document" role="img" alt="Page" title="Page"></div>
+								<span id="pagerText">10 of 33</span>
+							</div>
+						</div>
+						<div style="clear: both"></div>
+					</h1>
+				</heading>
+				<hr id="examHr" />
+				<div id="questions" style="position: absolute; width: 1883px; height: 772px; top: 97px; left: 0px">
+					<div class="question hidden" data-ident="it_210893">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_210893TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_210893">
+										<p tabindex="0" id="knet-it_210893-long-description" class="sr-only item-long-description">
+											1 Refer to the exhibit. A network administrator is configuring a router for DHCPv6 operation. Which conclusion can
+											be drawn based on the commands?Media Description: A screen capture of configuration commands is shown as follows:R1#
+											configure terminalEnter configuration commands, one per line. End with CNTL/Z.R1(config)# ipv6
+											unicast-routingR1(config)# ipv6 dhcp pool ACAD_CLASSR1(config-dhcp)# dns-server 2001:db8:acad:a1::10R1(config-dhcp)#
+											domain-name netacad.netR1(config-dhcp)# exitR1(config)# interface gigabitEthernet 0/0R1(config-if)# ipv6 address
+											2001:db8:acad:1::1/64R1(config-if)# ipv6 dhcp server ACAD_CLASSR1(config-if)# ipv6 nd
+											other-config-flagR1(config-if)# endR1#
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 1 </span>
+													<span class="questionText" aria-hidden="true">
+														<img
+															id="matimage-knet-it_210893-N65553"
+															class="material-image"
+															src="./Take Assessment_files/i210893v1n1_210893.png"
+															alt="Media Description: A screen capture of configuration commands is shown as follows:R1#configure terminalEnter configuration commands, one per line.  End with CNTL/Z.R1(config)#ipv6 unicast-routingR1(config)#ipv6 dhcp pool ACAD_CLASSR1(config-dhcp)#dns-server 2001:db8:acad:a1::10R1(config-dhcp)#domain-name netacad.netR1(config-dhcp)#exitR1(config)#interface gigabitEthernet 0/0R1(config-if)#ipv6 address 2001:db8:acad:1::1/64R1(config-if)#ipv6 dhcp server ACAD_CLASSR1(config-if)#ipv6 nd other-config-flagR1(config-if)#endR1#"
+															title="Media Description: A screen capture of configuration commands is shown as follows:R1#configure terminalEnter configuration commands, one per line.  End with CNTL/Z.R1(config)#ipv6 unicast-routingR1(config)#ipv6 dhcp pool ACAD_CLASSR1(config-dhcp)#dns-server 2001:db8:acad:a1::10R1(config-dhcp)#domain-name netacad.netR1(config-dhcp)#exitR1(config)#interface gigabitEthernet 0/0R1(config-if)#ipv6 address 2001:db8:acad:1::1/64R1(config-if)#ipv6 dhcp server ACAD_CLASSR1(config-if)#ipv6 nd other-config-flagR1(config-if)#endR1#"
+														/>
+														<span class="mattext">
+															Refer to the exhibit. A network administrator is configuring a router for DHCPv6 operation. Which
+															conclusion can be drawn based on the commands?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210893_1170512"
+															name="RESPONSE_MCSA_it_210893"
+															value="1170512"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																The router is configured for stateful DHCPv6 operation, but the DHCP pool configuration is
+																incomplete.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210893_1170509"
+															name="RESPONSE_MCSA_it_210893"
+															value="1170509"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> The DHCPv6 server name is ACAD_CLASS. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210893_1170510"
+															name="RESPONSE_MCSA_it_210893"
+															value="1170510"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> The router is configured for stateless DHCPv6 operation. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210893_1170511"
+															name="RESPONSE_MCSA_it_210893"
+															value="1170511"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> Clients would configure the interface IDs above 0010. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_210893", "RESPONSE_MCSA_it_210893", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "210893";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_210889">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_210889TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_210889">
+										<p tabindex="0" id="knet-it_210889-long-description" class="sr-only item-long-description">
+											3 A company uses the method SLAAC to configure IPv6 addresses for the workstations of the employees. A network
+											administrator configured the IPv6 address on the LAN interface of the router. The interface status is UP. However,
+											the workstations on the LAN segment did not obtain the correct prefix and prefix length. What else should be
+											configured on the router that is attached to the LAN segment for the workstations to obtain the information?​
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 3 </span>
+													<span class="questionText" aria-hidden="true">
+														<span class="mattext">
+															A company uses the method SLAAC to configure IPv6 addresses for the workstations of the employees. A
+															network administrator configured the IPv6 address on the LAN interface of the router. The interface
+															status is UP. However, the workstations on the LAN segment did not obtain the correct prefix and
+															prefix length. What else should be configured on the router that is attached to the LAN segment for
+															the workstations to obtain the information?​
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210889_1170485"
+															name="RESPONSE_MCSA_it_210889"
+															value="1170485"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																R1(config-if)#
+																<b> ipv6 enable </b>
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210889_1170486"
+															name="RESPONSE_MCSA_it_210889"
+															value="1170486"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																R1(config)#
+																<b> ipv6 unicast-routing </b>
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210889_1170488"
+															name="RESPONSE_MCSA_it_210889"
+															value="1170488"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																R1(config)#
+																<b> ipv6 dhcp pool </b>
+																&lt;
+																<i> name of the pool </i>
+																&gt;
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210889_1170487"
+															name="RESPONSE_MCSA_it_210889"
+															value="1170487"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																R1(config-if)#
+																<b> ipv6 nd other-config-flag </b>
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_210889", "RESPONSE_MCSA_it_210889", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "210889";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_210915">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_210915TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_210915">
+										<p tabindex="0" id="knet-it_210915-long-description" class="sr-only item-long-description">
+											4 Refer to the exhibit. Based on the output that is shown, what kind of IPv6 addressing is being configured? A
+											router CLI prompt that says: R1# show running-config &lt;output omitted&gt; ! ipv6 dhcp pool IPV6 dns-server
+											2001:DB8:1234:5678::100 domain-name netacad.com ! interface FastEthernet0/0 &lt;output omitted&gt; ipv6 nd
+											other-config-flag ipv6 dhcp server IPV6 ! &lt;output omitted&gt;
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 4 </span>
+													<span class="questionText" aria-hidden="true">
+														<img
+															id="matimage-knet-it_210915-N65553"
+															class="material-image"
+															src="./Take Assessment_files/i210915v1n1_210915.png"
+															alt="A router CLI prompt that says:R1#show running-config!ipv6 dhcp pool IPV6 dns-server 2001:DB8:1234:5678::100 domain-name netacad.com!interface FastEthernet0/0  ipv6 nd other-config-flag ipv6 dhcp server IPV6!"
+															title="A router CLI prompt that says:R1#show running-config!ipv6 dhcp pool IPV6 dns-server 2001:DB8:1234:5678::100 domain-name netacad.com!interface FastEthernet0/0  ipv6 nd other-config-flag ipv6 dhcp server IPV6!"
+														/>
+														<span class="mattext">
+															Refer to the exhibit. Based on the output that is shown, what kind of IPv6 addressing is being
+															configured?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210915_1189484"
+															name="RESPONSE_MCSA_it_210915"
+															value="1189484"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> static link-local </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210915_1189483"
+															name="RESPONSE_MCSA_it_210915"
+															value="1189483"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> stateless DHCPv6 </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210915_1189482"
+															name="RESPONSE_MCSA_it_210915"
+															value="1189482"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> stateful DHCPv6 </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210915_1189481"
+															name="RESPONSE_MCSA_it_210915"
+															value="1189481"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> SLAAC </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_210915", "RESPONSE_MCSA_it_210915", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "210915";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_210890">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_210890TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_210890">
+										<p tabindex="0" id="knet-it_210890-long-description" class="sr-only item-long-description">
+											5 A company uses the SLAAC method to configure IPv6 addresses for the employee workstations. Which address will a
+											client use as its default gateway?​
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 5 </span>
+													<span class="questionText" aria-hidden="true">
+														<span class="mattext">
+															A company uses the SLAAC method to configure IPv6 addresses for the employee workstations. Which
+															address will a client use as its default gateway?​
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210890_1170489"
+															name="RESPONSE_MCSA_it_210890"
+															value="1170489"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> the all-routers multicast address </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210890_1170490"
+															name="RESPONSE_MCSA_it_210890"
+															value="1170490"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																the link-local address of the router interface that is attached to the network
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210890_1170492"
+															name="RESPONSE_MCSA_it_210890"
+															value="1170492"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																the global unicast address of the router interface that is attached to the network
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210890_1170491"
+															name="RESPONSE_MCSA_it_210890"
+															value="1170491"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																the unique local address of the router interface that is attached to the network
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_210890", "RESPONSE_MCSA_it_210890", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "210890";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_210917">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_210917TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_210917">
+										<p tabindex="0" id="knet-it_210917-long-description" class="sr-only item-long-description">
+											6 Refer to the exhibit. What should be done to allow PC-A to receive an IPv6 address from the DHCPv6 server? A
+											router labeled RTR1 is connected to SW1 on its Fa0/0 interface and SW2 on its Fa0/1 interface. Both interfaces are
+											labeled ":1". SW1 is connected to PC-A and SW2 is connected to DHCPv6 Server. The connection to SW1 is labeled
+											2001:DB8:1234:5678::/64 and the connection to SW2 is labeled 2001:DB8:1234:ABCD::/64. The DHCPv6 Server is also
+											labeled 2001:DB8:1234:ABCD::10/64. There is a CLI output that says: RTR1# show running-config hostname RTR1 !
+											&lt;output omitted&gt; interface FastEthernet0/0 ip address dhcp duplex auto speed auto ipv6 address
+											2001:DB8:1234:5678::1/64 ipv6 nd managed-config-flag ! interface FastEthernet0/1 no ip address duplex auto speed
+											auto ipv6 address 2001:DB8:1234:ABCD::1/64 ! &lt;output omitted&gt;
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 6 </span>
+													<span class="questionText" aria-hidden="true">
+														<img
+															id="matimage-knet-it_210917-N65553"
+															class="material-image"
+															src="./Take Assessment_files/i210917v1n1_Question 8.png"
+															alt="A router labeled RTR1 is connected to SW1 on its Fa0/0 interface and SW2 on its Fa0/1 interface. Both interfaces are labeled &amp;quot;:1&amp;quot;.  SW1 is connected to PC-A and SW2 is connected to DHCPv6 Server. The connection to SW1 is labeled 2001:DB8:1234:5678::/64 and the connection to SW2 is labeled 2001:DB8:1234:ABCD::/64. The DHCPv6 Server is also labeled 2001:DB8:1234:ABCD::10/64. There is a CLI output that says:RTR1#show running-confighostname RTR1!interface FastEthernet0/0 ip address dhcp duplex auto speed auto ipv6 address 2001:DB8:1234:5678::1/64 ipv6 nd managed-config-flag!interface FastEthernet0/1 no ip address duplex auto speed auto ipv6 address 2001:DB8:1234:ABCD::1/64!"
+															title="A router labeled RTR1 is connected to SW1 on its Fa0/0 interface and SW2 on its Fa0/1 interface. Both interfaces are labeled &amp;quot;:1&amp;quot;.  SW1 is connected to PC-A and SW2 is connected to DHCPv6 Server. The connection to SW1 is labeled 2001:DB8:1234:5678::/64 and the connection to SW2 is labeled 2001:DB8:1234:ABCD::/64. The DHCPv6 Server is also labeled 2001:DB8:1234:ABCD::10/64. There is a CLI output that says:RTR1#show running-confighostname RTR1!interface FastEthernet0/0 ip address dhcp duplex auto speed auto ipv6 address 2001:DB8:1234:5678::1/64 ipv6 nd managed-config-flag!interface FastEthernet0/1 no ip address duplex auto speed auto ipv6 address 2001:DB8:1234:ABCD::1/64!"
+														/>
+														<span class="mattext">
+															Refer to the exhibit. What should be done to allow PC-A to receive an IPv6 address from the DHCPv6
+															server?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210917_1171289"
+															name="RESPONSE_MCSA_it_210917"
+															value="1171289"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																Add the IPv6 address 2001:DB8:1234:5678::10/64 to the interface configuration of the DHCPv6
+																server.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210917_1171287"
+															name="RESPONSE_MCSA_it_210917"
+															value="1171287"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																Configure the
+																<b> ipv6 nd managed-config-flag </b>
+																command on interface Fa0/1.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210917_1171286"
+															name="RESPONSE_MCSA_it_210917"
+															value="1171286"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																Add the
+																<b> ipv6 dhcp relay </b>
+																command to interface Fa0/0.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_210917_1171288"
+															name="RESPONSE_MCSA_it_210917"
+															value="1171288"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																Change the
+																<b> ipv6 nd managed-config-flag </b>
+																command to
+																<b> ipv6 nd other-config-flag </b>
+																.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_210917", "RESPONSE_MCSA_it_210917", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "210917";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_216443">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_216443TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_216443">
+										<p tabindex="0" id="knet-it_216443-long-description" class="sr-only item-long-description">
+											7 Refer to the exhibit. What protocol can be configured on gateway routers R1 and R2 that will allow traffic from
+											the internal LAN to be load balanced across the two gateways to the Internet? The graphic displays an internal LAN
+											connected to two switches. Each switch has a connection to routers labeled R1 and R2. R1 and R2 act as gateway
+											routers and have a separate connection to the Internet.
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 7 </span>
+													<span class="questionText" aria-hidden="true">
+														<img
+															id="matimage-knet-it_216443-N65553"
+															class="material-image"
+															src="./Take Assessment_files/i216443v1n1_216443.PNG"
+															alt="The graphic displays an internal LAN connected to two switches. Each switch has a connection to routers labeled R1 and R2. R1 and R2 act as gateway routers and have a separate connection to the Internet."
+															title="The graphic displays an internal LAN connected to two switches. Each switch has a connection to routers labeled R1 and R2. R1 and R2 act as gateway routers and have a separate connection to the Internet."
+														/>
+														<span class="mattext">
+															Refer to the exhibit. What protocol can be configured on gateway routers R1 and R2 that will allow
+															traffic from the internal LAN to be load balanced across the two gateways to the Internet?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_216443_1216793"
+															name="RESPONSE_MCSA_it_216443"
+															value="1216793"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> PVST </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_216443_1216792"
+															name="RESPONSE_MCSA_it_216443"
+															value="1216792"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> STP </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_216443_1216795"
+															name="RESPONSE_MCSA_it_216443"
+															value="1216795"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> GLBP </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_216443_1216794"
+															name="RESPONSE_MCSA_it_216443"
+															value="1216794"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> PVST+ </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_216443", "RESPONSE_MCSA_it_216443", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "216443";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_223091">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_223091TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_223091">
+										<p tabindex="0" id="knet-it_223091-long-description" class="sr-only item-long-description">
+											8 Refer to the exhibit. Which destination MAC address is used when frames are sent from the workstation to the
+											default gateway? A workstation is connected to a Layer 2 switch which in turn is connected to two Layer 3 switches
+											marked Forwarding router and Standby router respectively. Both of the Layer 3 switches are connected to a Virtual
+											router, which is positioned between the two of them, and are also connected to the Core network. There is an arrow
+											showing the current path of traffic, which moves from the workstation to the Forwarding router, then to the virtual
+											router and back to the Forwarding router. From the Forwarding router traffic goes to the Core network.
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 8 </span>
+													<span class="questionText" aria-hidden="true">
+														<img
+															id="matimage-knet-it_223091-N65553"
+															class="material-image"
+															src="./Take Assessment_files/i223091v1n1_223091.png"
+															alt="A workstation is connected to a Layer 2 switch which in turn is connected to two Layer 3 switches marked Forwarding router and Standby router respectively. Both of the Layer 3 switches are connected to a Virtual router, which is positioned  between the two of them,  and are also connected to the Core network. There is an arrow showing the current path of traffic, which moves from the workstation to the Forwarding router, then to the virtual router and back to the Forwarding router. From the Forwarding router traffic goes to the Core network."
+															title="A workstation is connected to a Layer 2 switch which in turn is connected to two Layer 3 switches marked Forwarding router and Standby router respectively. Both of the Layer 3 switches are connected to a Virtual router, which is positioned  between the two of them,  and are also connected to the Core network. There is an arrow showing the current path of traffic, which moves from the workstation to the Forwarding router, then to the virtual router and back to the Forwarding router. From the Forwarding router traffic goes to the Core network."
+														/>
+														<span class="mattext">
+															Refer to the exhibit. Which destination MAC address is used when frames are sent from the
+															workstation to the default gateway?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223091_1226251"
+															name="RESPONSE_MCSA_it_223091"
+															value="1226251"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> MAC address of the forwarding router </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223091_1226252"
+															name="RESPONSE_MCSA_it_223091"
+															value="1226252"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> MAC addresses of both the forwarding and standby routers </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223091_1226253"
+															name="RESPONSE_MCSA_it_223091"
+															value="1226253"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> MAC address of the standby router </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223091_1226254"
+															name="RESPONSE_MCSA_it_223091"
+															value="1226254"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> MAC address of the virtual router </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_223091", "RESPONSE_MCSA_it_223091", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "223091";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_350851">
+						<div class="item">
+							<script type="text/javascript">
+								prev_name.push("RESPONSE_SSAI_it_350851");
+								prev_value.push("obs0= ");
+
+								prev_name.push("RESPONSE_SSAI_it_350851");
+								prev_value.push("status= ");
+							</script>
+							<!-- WRAPPER -->
+							<!-- START SSAI (ass-ssai) -->
+							<script language="JavaScript">
+								<!--
+								Question.index++;
+								Question[Question.index] = new QuestionObj("SSI", "AIit_350851", "RESPONSE_SSAI_it_350851", 2, "flash");
+								Question[Question.index].response_labels[1] = "obs0";
+								Question[Question.index].response_labels[2] = "status";
+								//
+								-->
+							</script>
+							<form onsubmit="return false;" name="AIit_350851">
+								<p tabindex="0" id="knet-it_350851-long-description" class="sr-only item-long-description">9 Drag and Drop</p>
+								<legend>
+									<div class="ai-stem surveyHeader">
+										<span class="questionNum" aria-hidden="true"> 9 </span>
+										<span class="questionText" aria-hidden="true"> </span>
+									</div>
+								</legend>
+								<div class="DndContainer" id="AIit_350851dnd_container" style="width: 768px">
+									<div class="DragDropMatching ltr">
+										<div>
+											<div
+												aria-atomic="true"
+												aria-live="polite"
+												style="
+													position: absolute;
+													visibility: visible;
+													overflow: hidden;
+													display: block;
+													width: 1px;
+													height: 1px;
+													margin: -1px;
+													border: 0px;
+													padding: 0px;
+													clip: rect(0px, 0px, 0px, 0px);
+													clip-path: polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px);
+													white-space: nowrap;
+												"
+											>
+												<p>Option 1: HSRP. Press spacebar to enter matching mode.</p>
+											</div>
+											<div class="card card-body">
+												<div tabindex="0" aria-label="You are in a drag and drop activity." role="region" class="card-body">
+													<div class="navInstructions">
+														<a
+															href="https://assessment.netacad.net/virtuoso/delivery/pub-doc/2.0/assessment/lti.1.0/exam.html"
+															aria-hidden="true"
+															style="display: inline"
+															><svg
+																fill="currentColor"
+																preserveAspectRatio="xMidYMid meet"
+																height="1em"
+																width="1em"
+																viewBox="0 0 40 40"
+																class="icon-large"
+																role="img"
+																alt="Keyboard shortcuts: "
+																title="Keyboard shortcuts: "
+																style="vertical-align: middle"
+															>
+																<g>
+																	<path
+																		d="m8 25.6v2q0 0.4-0.4 0.4h-2q-0.3 0-0.3-0.4v-2q0-0.3 0.3-0.3h2q0.4 0 0.4 0.3z m2.6-5.3v2q0 0.4-0.3 0.4h-4.7q-0.3 0-0.3-0.4v-2q0-0.3 0.3-0.3h4.7q0.3 0 0.3 0.3z m-2.6-5.3v2q0 0.3-0.4 0.3h-2q-0.3 0-0.3-0.3v-2q0-0.3 0.3-0.3h2q0.4 0 0.4 0.3z m21.2 10.6v2q0 0.4-0.3 0.4h-17.9q-0.4 0-0.4-0.4v-2q0-0.3 0.4-0.3h17.9q0.3 0 0.3 0.3z m-13.3-5.3v2q0 0.4-0.3 0.4h-2q-0.3 0-0.3-0.4v-2q0-0.3 0.3-0.3h2q0.3 0 0.3 0.3z m-2.6-5.3v2q0 0.3-0.3 0.3h-2q-0.4 0-0.4-0.3v-2q0-0.3 0.4-0.3h2q0.3 0 0.3 0.3z m8 5.3v2q0 0.4-0.4 0.4h-2q-0.3 0-0.3-0.4v-2q0-0.3 0.3-0.3h2q0.4 0 0.4 0.3z m-2.7-5.3v2q0 0.3-0.3 0.3h-2q-0.4 0-0.4-0.3v-2q0-0.3 0.4-0.3h2q0.3 0 0.3 0.3z m8 5.3v2q0 0.4-0.4 0.4h-1.9q-0.4 0-0.4-0.4v-2q0-0.3 0.4-0.3h1.9q0.4 0 0.4 0.3z m8 5.3v2q0 0.4-0.4 0.4h-2q-0.3 0-0.3-0.4v-2q0-0.3 0.3-0.3h2q0.4 0 0.4 0.3z m-10.7-10.6v2q0 0.3-0.3 0.3h-2q-0.3 0-0.3-0.3v-2q0-0.3 0.3-0.3h2q0.3 0 0.3 0.3z m5.3 0v2q0 0.3-0.3 0.3h-2q-0.3 0-0.3-0.3v-2q0-0.3 0.3-0.3h2q0.3 0 0.3 0.3z m5.4 0v7.3q0 0.4-0.4 0.4h-4.6q-0.4 0-0.4-0.4v-2q0-0.3 0.4-0.3h2.3v-5q0-0.3 0.3-0.3h2q0.3 0 0.3 0.3z m2.6 15.6v-18.6h-34.5v18.6h34.5z m2.7-18.6v18.6q0 1.1-0.8 1.9t-1.9 0.8h-34.5q-1.1 0-1.9-0.8t-0.8-1.9v-18.6q0-1.1 0.8-1.9t1.9-0.7h34.5q1.1 0 1.9 0.7t0.8 1.9z"
+																	></path>
+																</g></svg></a
+														><a
+															href="https://assessment.netacad.net/virtuoso/delivery/pub-doc/2.0/assessment/lti.1.0/exam.html"
+															aria-hidden="true"
+															style="display: inline"
+															><svg
+																fill="currentColor"
+																preserveAspectRatio="xMidYMid meet"
+																height="1em"
+																width="1em"
+																viewBox="0 0 40 40"
+																class="icon-large"
+																role="img"
+																alt="Mobile Instructions: "
+																title="Mobile Instructions: "
+																style="vertical-align: middle; display: none"
+															>
+																<g>
+																	<path
+																		d="m21.9 31.4q0-0.7-0.6-1.2t-1.2-0.6-1.3 0.6-0.5 1.2 0.5 1.3 1.3 0.5 1.2-0.5 0.6-1.3z m4.6-3.5v-15.8q0-0.2-0.2-0.5t-0.5-0.2h-11.4q-0.3 0-0.5 0.2t-0.3 0.5v15.8q0 0.2 0.3 0.5t0.5 0.2h11.4q0.3 0 0.5-0.2t0.2-0.5z m-4.3-19q0-0.3-0.3-0.3h-3.6q-0.4 0-0.4 0.3t0.4 0.4h3.6q0.3 0 0.3-0.4z m6.4-0.3v22.8q0 1.2-0.8 2t-2 0.9h-11.4q-1.2 0-2.1-0.9t-0.8-2v-22.8q0-1.2 0.8-2t2.1-0.9h11.4q1.1 0 2 0.9t0.8 2z"
+																	></path>
+																</g></svg
+														></a>
+													</div>
+													<div class="label-container">
+														<h5 dir="ltr" tabindex="0" aria-hidden="true" role="heading" class="stem-title card-title">
+															<textformat leading="2"
+																><p align="LEFT">
+																	<span face="_sans" size="12" color="#000000" letterspacing="0" kerning="0"
+																		>Match the FHRP protocols to the appropriate description. (Not all options are
+																		used.)</span
+																	>
+																</p></textformat
+															>
+														</h5>
+													</div>
+													<hr />
+													<div class="no-gutters row">
+														<div dir="ltr" class="drag-col col-12 col-md-6">
+															<div
+																class="options-list"
+																tabindex="0"
+																role="list"
+																aria-label="Available Options: contains 3 options of 3 total."
+															>
+																<div
+																	tabindex="0"
+																	role="listitem"
+																	aria-label="HSRP"
+																	class="drag-option align-right"
+																	draggable="true"
+																	style="opacity: 1"
+																>
+																	<span class="label-container"
+																		><div class="option-title label-align-right">
+																			<div>
+																				<textformat leading="2"
+																					><p align="CENTER">
+																						<span
+																							face="_sans"
+																							size="12"
+																							color="#000000"
+																							letterspacing="0"
+																							kerning="0"
+																							>HSRP</span
+																						>
+																					</p></textformat
+																				>
+																			</div>
+																		</div></span
+																	>
+																</div>
+																<div
+																	tabindex="0"
+																	role="listitem"
+																	aria-label="VRRP"
+																	class="drag-option align-right"
+																	draggable="true"
+																	style="opacity: 1"
+																>
+																	<span class="label-container"
+																		><div class="option-title label-align-right">
+																			<div>
+																				<textformat leading="2"
+																					><p align="CENTER">
+																						<span
+																							face="_sans"
+																							size="12"
+																							color="#000000"
+																							letterspacing="0"
+																							kerning="0"
+																							>VRRP</span
+																						>
+																					</p></textformat
+																				>
+																			</div>
+																		</div></span
+																	>
+																</div>
+																<div
+																	tabindex="0"
+																	role="listitem"
+																	aria-label="GLBP"
+																	class="drag-option align-right"
+																	draggable="true"
+																	style="opacity: 1"
+																>
+																	<span class="label-container"
+																		><div class="option-title label-align-right">
+																			<div>
+																				<textformat leading="2"
+																					><p align="CENTER">
+																						<span
+																							face="_sans"
+																							size="12"
+																							color="#000000"
+																							letterspacing="0"
+																							kerning="0"
+																							>GLBP</span
+																						>
+																					</p></textformat
+																				>
+																			</div>
+																		</div></span
+																	>
+																</div>
+															</div>
+														</div>
+														<div dir="ltr" class="drop-col col-12 col-md-6">
+															<div tabindex="0" role="list" aria-label="4 descriptions available for matching">
+																<div
+																	class="drop-zone"
+																	role="listitem"
+																	aria-label="a  Cisco proprietary FHRP that provides load sharing in addition to redundancy"
+																	tabindex="0"
+																	style="background-color: rgb(255, 255, 255); border-color: rgb(119, 127, 136)"
+																>
+																	<span class="label-container"
+																		><h4 class="target-title dropzone-label label-align-right" aria-hidden="true">
+																			<textformat leading="2"
+																				><p align="LEFT">
+																					<span face="Arial" size="12" color="#000000" letterspacing="0" kerning="0"
+																						>a
+																						<span face="_sans"
+																							>Cisco proprietary FHRP that provides load sharing in addition to
+																							redundancy</span
+																						></span
+																					>
+																				</p></textformat
+																			>
+																		</h4></span
+																	>
+																	<div class="drop-target"><div class="placeholder"></div></div>
+																</div>
+																<span class="target-end"></span>
+																<div
+																	class="drop-zone"
+																	role="listitem"
+																	aria-label="a  Cisco proprietary FHRP that provides redundancy through use of an active device and standby device"
+																	tabindex="0"
+																	style="background-color: rgb(255, 255, 255); border-color: rgb(119, 127, 136)"
+																>
+																	<span class="label-container"
+																		><h4 class="target-title dropzone-label label-align-right" aria-hidden="true">
+																			<textformat leading="2"
+																				><p align="LEFT">
+																					<span face="Arial" size="12" color="#000000" letterspacing="0" kerning="0"
+																						>a
+																						<span face="_sans"
+																							>Cisco proprietary FHRP that provides redundancy through use of an
+																							active device and standby device</span
+																						></span
+																					>
+																				</p></textformat
+																			>
+																		</h4></span
+																	>
+																	<div class="drop-target"><div class="placeholder"></div></div>
+																</div>
+																<span class="target-end"></span>
+																<div
+																	class="drop-zone"
+																	role="listitem"
+																	aria-label="an open standard FHRP that provides redundancy through use of a virtual routers master and one or more backups"
+																	tabindex="0"
+																	style="background-color: rgb(255, 255, 255); border-color: rgb(119, 127, 136)"
+																>
+																	<span class="label-container"
+																		><h4 class="target-title dropzone-label label-align-right" aria-hidden="true">
+																			<textformat leading="2"
+																				><p align="LEFT">
+																					<span face="_sans" size="12" color="#000000" letterspacing="0" kerning="0"
+																						>an open standard FHRP that provides redundancy through use of a virtual
+																						routers master and one or more backups</span
+																					>
+																				</p></textformat
+																			>
+																		</h4></span
+																	>
+																	<div class="drop-target"><div class="placeholder"></div></div>
+																</div>
+																<span class="target-end"></span>
+																<div
+																	class="drop-zone"
+																	role="listitem"
+																	aria-label="a legacy open standard FHRP that allows IPv4 hosts to discover gateway routers"
+																	tabindex="0"
+																	style="background-color: rgb(255, 255, 255); border-color: rgb(119, 127, 136)"
+																>
+																	<span class="label-container"
+																		><h4 class="target-title dropzone-label label-align-right" aria-hidden="true">
+																			<textformat leading="2"
+																				><p align="LEFT">
+																					<span face="_sans" size="12" color="#000000" letterspacing="0" kerning="0"
+																						>a legacy open standard FHRP that allows IPv4 hosts to discover gateway
+																						routers</span
+																					>
+																				</p></textformat
+																			>
+																		</h4></span
+																	>
+																	<div class="drop-target"><div class="placeholder"></div></div>
+																</div>
+																<span class="target-end"></span>
+															</div>
+														</div>
+													</div>
+													<div></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<script type="text/javascript">
+									var previousResponseName = "RESPONSE_SSAI_it_350851";
+									var itemId = "it_350851".replace("it_", "");
+									var DndMode = "";
+									var previousAnswers = "";
+									if (flashInterface === "instructor" && flashInteractive === false) {
+										var previousAnsweredIndex = 0;
+										while (
+											previousAnsweredIndex < prev_name.length &&
+											(prev_name[previousAnsweredIndex] != previousResponseName ||
+												prev_value[previousAnsweredIndex].indexOf("status=") === -1)
+										) {
+											previousAnsweredIndex += 1;
+										}
+										previousAnswers = prev_value[previousAnsweredIndex] ? prev_value[previousAnsweredIndex].replace("status=", "") : "";
+										DndMode = "as answered";
+									}
+									window.mountDnD({
+										node: "AIit_350851dnd_container",
+										item: "350851",
+										slix: vds.cache.get("SLIX"),
+										language: vds.cache.get("LANGUAGE"),
+										restoreAnswers: previousAnswers,
+										mode: DndMode,
+									});
+									var selectFirstInputInterval = setInterval(function () {
+										var firstInput = $(".question:not('.hidden') .options-list div[role=listitem]:first");
+										if (firstInput) {
+											firstInput.focus();
+											clearInterval(selectFirstInputInterval);
+										}
+									}, 500);
+								</script>
+								<div class="question-navigation-div question-navigation-div-dnd">
+									<div class="skip-question-navigation-container">
+										<a
+											tabindex="0"
+											class="skip-question-navigation"
+											href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+										>
+											Navigation Bar
+										</a>
+									</div>
+								</div>
+								<br />
+							</form>
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_223502">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_223502TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_223502">
+										<p tabindex="0" id="knet-it_223502-long-description" class="sr-only item-long-description">
+											10 A network administrator is analyzing the features that are supported by different first-hop router redundancy
+											protocols. Which statement describes a feature that is associated with HSRP?
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 10 </span>
+													<span class="questionText" aria-hidden="true">
+														<span class="mattext">
+															A network administrator is analyzing the features that are supported by different first-hop router
+															redundancy protocols. Which statement describes a feature that is associated with HSRP?
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223502_1313115"
+															name="RESPONSE_MCSA_it_223502"
+															value="1313115"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> HSRP uses active and standby routers. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223502_1313116"
+															name="RESPONSE_MCSA_it_223502"
+															value="1313116"
+														/>
+														<span class="ai-option">
+															<span class="mattext">
+																It uses ICMP messages in order to assign the default gateway to hosts.
+															</span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223502_1313117"
+															name="RESPONSE_MCSA_it_223502"
+															value="1313117"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> It allows load balancing between a group of redundant routers. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="RADIO"
+															id="RESPONSE_MCSA_it_223502_1313118"
+															name="RESPONSE_MCSA_it_223502"
+															value="1313118"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> HSRP is nonproprietary. </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCSA", "AIit_223502", "RESPONSE_MCSA_it_223502", 1);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "223502";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+					<div class="question hidden" data-ident="it_207484">
+						<div class="item">
+							<script type="text/javascript"></script>
+							<!-- WRAPPER -->
+							<!-- START MCSA, MCMA, FIB -->
+							<div class="Text" id="AIit_207484TextDiv">
+								<div>
+									<form onsubmit="return false;" name="AIit_207484">
+										<p tabindex="0" id="knet-it_207484-long-description" class="sr-only item-long-description">
+											30 Which protocol automates assignment of IP addresses on a network, and which port number does it use? (Choose
+											two.)
+										</p>
+										<fieldset class="questionFieldset">
+											<legend>
+												<div class="ai-stem surveyHeader">
+													<span class="questionNum" aria-hidden="true"> 30 </span>
+													<span class="questionText" aria-hidden="true">
+														<span class="mattext">
+															Which protocol automates assignment of IP addresses on a network, and which port number does it use?
+															(Choose two.)
+														</span>
+													</span>
+												</div>
+											</legend>
+											<ul class="coreContent">
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097499"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097499"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> DHCP </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097500"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097500"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> DNS </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097501"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097501"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> SMB </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097502"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097502"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> 53 </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097503"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097503"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> 67 </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<label class="ai-option-label">
+														<input
+															type="CHECKBOX"
+															id="RESPONSE_MCMA_it_207484_1097504"
+															name="RESPONSE_MCMA_it_207484"
+															value="1097504"
+														/>
+														<span class="ai-option">
+															<span class="mattext"> 80 </span>
+														</span>
+													</label>
+												</li>
+												<li>
+													<div class="skip-question-navigation-container">
+														<a
+															tabindex="0"
+															class="skip-question-navigation"
+															href="javascript:document.querySelector(&#39;.current button&#39;).focus();"
+														>
+															Navigation Bar
+														</a>
+													</div>
+												</li>
+											</ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+							<script type="text/javascript">
+								Question.index++;
+								Question[Question.index] = new QuestionObj("MCMA", "AIit_207484", "RESPONSE_MCMA_it_207484", 6);
+								Question[Question.index].isTestletItem = false;
+								Question[Question.index].response_labels[1] = "207484";
+							</script>
+							<!-- END MCSA, MCMA, FIB -->
+							<!-- WRAPPER -->
+						</div>
+					</div>
+				</div>
+				<div
+					id="navbarhover"
+					class="ui-widget ui-corner-all"
+					style="position: absolute; width: 1904px; height: 20px; padding-left: 0px; padding-right: 0px; top: 879px; left: 0px"
+				>
+					<span id="hovertext" class="ui-priority-primary" style="position: relative; top: 2px; left: 566.898px"> </span>
+				</div>
+				<nav id="navbar" class="ui-corner-all" style="height: 40px; position: absolute; width: 1904px; top: 899px">
+					<button id="previous" aria-label="Previous Question" class="ui-button ui-corner-all ui-widget" style="top: 5px; left: 5px">Previous</button>
+					<button id="next" aria-label="Next Question" class="ui-button ui-corner-all ui-widget" style="top: 5px; left: 5px">Next</button>
+
+					<div id="questionbar" style="position: absolute; width: 1682.47px; cursor: pointer; top: 0.5px; left: 151.531px">
+						<ul id="questionbarcontainer" class="questionbartable">
+							<li class="visited" data-ident="it_210893"><button class="default" data-ident="it_210893" aria-label="Question 1"></button></li>
+							<li class="default" data-ident="it_210918"><button class="default" data-ident="it_210918" aria-label="Question 2"></button></li>
+							<li class="visited" data-ident="it_210889"><button class="default" data-ident="it_210889" aria-label="Question 3"></button></li>
+							<li class="visited" data-ident="it_210915"><button class="default" data-ident="it_210915" aria-label="Question 4"></button></li>
+							<li class="visited" data-ident="it_210890"><button class="default" data-ident="it_210890" aria-label="Question 5"></button></li>
+							<li class="visited" data-ident="it_210917"><button class="default" data-ident="it_210917" aria-label="Question 6"></button></li>
+							<li class="visited" data-ident="it_216443"><button class="default" data-ident="it_216443" aria-label="Question 7"></button></li>
+							<li class="visited" data-ident="it_223091"><button class="default" data-ident="it_223091" aria-label="Question 8"></button></li>
+							<li class="visited" data-ident="it_350851"><button class="default" data-ident="it_350851" aria-label="Question 9"></button></li>
+							<li class="current" data-ident="it_223502"><button class="default" data-ident="it_223502" aria-label="Question 10"></button></li>
+							<li class="default" data-ident="it_350427"><button class="default" data-ident="it_350427" aria-label="Question 11"></button></li>
+							<li class="default" data-ident="it_216427"><button class="default" data-ident="it_216427" aria-label="Question 12"></button></li>
+							<li class="default" data-ident="it_268879"><button class="default" data-ident="it_268879" aria-label="Question 13"></button></li>
+							<li class="default" data-ident="it_223435"><button class="default" data-ident="it_223435" aria-label="Question 14"></button></li>
+							<li class="default" data-ident="it_350314"><button class="default" data-ident="it_350314" aria-label="Question 15"></button></li>
+							<li class="default" data-ident="it_210963"><button class="default" data-ident="it_210963" aria-label="Question 16"></button></li>
+							<li class="default" data-ident="it_350422"><button class="default" data-ident="it_350422" aria-label="Question 17"></button></li>
+							<li class="default" data-ident="it_278191"><button class="default" data-ident="it_278191" aria-label="Question 18"></button></li>
+							<li class="default" data-ident="it_210922"><button class="default" data-ident="it_210922" aria-label="Question 19"></button></li>
+							<li class="default" data-ident="it_209429"><button class="default" data-ident="it_209429" aria-label="Question 20"></button></li>
+							<li class="default" data-ident="it_282165"><button class="default" data-ident="it_282165" aria-label="Question 21"></button></li>
+							<li class="default" data-ident="it_282170"><button class="default" data-ident="it_282170" aria-label="Question 22"></button></li>
+							<li class="default" data-ident="it_215786"><button class="default" data-ident="it_215786" aria-label="Question 23"></button></li>
+							<li class="default" data-ident="it_285525"><button class="default" data-ident="it_285525" aria-label="Question 24"></button></li>
+							<li class="default" data-ident="it_210885"><button class="default" data-ident="it_210885" aria-label="Question 25"></button></li>
+							<li class="default" data-ident="it_209372"><button class="default" data-ident="it_209372" aria-label="Question 26"></button></li>
+							<li class="default" data-ident="it_282166"><button class="default" data-ident="it_282166" aria-label="Question 27"></button></li>
+							<li class="default" data-ident="it_207537"><button class="default" data-ident="it_207537" aria-label="Question 28"></button></li>
+							<li class="default" data-ident="it_282894"><button class="default" data-ident="it_282894" aria-label="Question 29"></button></li>
+							<li class="default" data-ident="it_207484"><button class="default" data-ident="it_207484" aria-label="Question 30"></button></li>
+							<li class="default" data-ident="it_210905"><button class="default" data-ident="it_210905" aria-label="Question 31"></button></li>
+							<li class="default" data-ident="it_206306"><button class="default" data-ident="it_206306" aria-label="Question 32"></button></li>
+							<li class="default" data-ident="it_350364"><button class="default" data-ident="it_350364" aria-label="Question 33"></button></li>
+						</ul>
+					</div>
+					<button id="submit" class="ui-button ui-corner-all ui-widget" style="top: 5px; left: 1702.94px; margin-left: -5px">Submit</button>
+				</nav>
+			</main>
+		</div>
+		<div style="display: none">
+			<div id="ptControls" class="ptControls">
+				<button type="button" class="ptShow btn btn--primary-ghost">Launch PT</button>
+				<button type="button" class="ptHide btn btn--primary-ghost">Hide and Save PT</button>
+				<div class="ptError ui-widget ui-widget-content ui-corner-all ui-state-error bold" style="display: none">
+					<span class="pt-error-close ui-icon ui-icon-circle-close"></span>
+					<span class="pt-error-message">ERROR: An error has occurred with this item. Notify your instructor for further instructions.</span>
+					<span class="pt-error-view-details">View Details</span>
+				</div>
+				<div class="ptShowRollover ui-widget ui-widget-content ui-corner-all ui-state-highlight" style="display: none">
+					This will open the PT activity. Any changes made will be saved for the duration of this exam session
+				</div>
+				<div class="ptHideRollover ui-widget ui-widget-content ui-corner-all ui-state-highlight" style="display: none">
+					This will close the PT activity, but any changes made will be saved for the duration of this exam session. To resume your work on this PT
+					Activity, click "Launch PT" to reopen and resume your work in PT.
+				</div>
+				<div class="ptStatus ui-widget ui-widget-content ui-corner-all ui-state-highlight bold">Connecting...</div>
+			</div>
+			<div id="ptSkipped" class="ptControls">
+				<div class="ptSkipped ui-widget ui-widget-content ui-corner-all ui-state-highlight">
+					The PT initialization was skipped. You will not be able to view the PT activity.
+				</div>
+			</div>
+		</div>
+
+		<div
+			tabindex="-1"
+			role="dialog"
+			class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable ui-resizable"
+			aria-describedby="error-dialog"
+			aria-labelledby="ui-id-1"
+			style="display: none; position: absolute"
+		>
+			<div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
+				<span id="ui-id-1" class="ui-dialog-title">Error</span
+				><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close">
+					<span class="ui-button-icon ui-icon ui-icon-closethick"></span><span class="ui-button-icon-space"> </span>Close
+				</button>
+			</div>
+			<div id="error-dialog" class="ui-dialog-content ui-widget-content">
+				<ul class="alerts">
+					<li class="alert-error ui-state-error ui-corner-all">
+						<div class="ui-icon ui-icon-alert"></div>
+						<div class="alert-message">
+							An error occurred while connecting to the server. Please check your internet connection or try again later.
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<div class="ui-dialog-buttonset"><button type="button" class="ui-button ui-corner-all ui-widget">OK</button></div>
+			</div>
+			<div class="ui-resizable-handle ui-resizable-n" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-e" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-s" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-w" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90"></div>
+			<div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90"></div>
+		</div>
+		<div
+			tabindex="-1"
+			role="dialog"
+			class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons"
+			aria-describedby="tenminutewarning"
+			aria-labelledby="ui-id-2"
+			style="display: none"
+		>
+			<div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix">
+				<span id="ui-id-2" class="ui-dialog-title">Assessment Time Warning</span
+				><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close">
+					<span class="ui-button-icon ui-icon ui-icon-closethick"></span><span class="ui-button-icon-space"> </span>Close
+				</button>
+			</div>
+			<div id="tenminutewarning" style="" class="ui-dialog-content ui-widget-content">
+				<p class="ui-state-error-text">10 Minute Warning<br /><br />You have fewer than 10 minutes to complete the assessment.</p>
+			</div>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<div class="ui-dialog-buttonset"><button type="button" class="btn btn--primary-ghost ui-button ui-corner-all ui-widget">OK</button></div>
+			</div>
+		</div>
+		<script src="assessment.js"></script>
+	</body>
+</html>

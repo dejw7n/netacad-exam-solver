@@ -1,0 +1,439 @@
+function performAction(action, sync) {
+  if (process(action)) {
+	  var getResponse = true;
+	  if (action == "go") {
+		  getResponse = false;
+	  }
+      return response(getResponse, !!sync);
+  }
+  else {
+    return false;
+  }
+}
+
+function process(action) {
+  if (submitted){ 
+    return;
+  }
+    
+  if (action == "go") { 
+    //result = document.SubmitForm.PAGENUMBER.options[document.SubmitForm.PAGENUMBER.selectedIndex].value; // grab page value
+	  result = 1;
+        
+    // if its submit, leave the 'go' off
+    if (result == "intro" || result == "submit") {
+      action = result;
+    } 
+    else {
+      action = action + result;
+    }
+  }
+  if (document && document.page && document.page.BUTTON) {
+	    document.page.BUTTON.value = action;
+  }
+  return true;
+}
+
+// The sync parameter indicates the AJAX call needs to be done synchronously.
+// This is done so the responses can be sent during a page unload event in IE.
+function response(getResponse, sync){
+//         MCSA - for Multiple Choice Single Answer
+//         MCMA - for Multiple Choice Multiple Answer
+//         TF  - for True and False
+//         FIB  - for Fill In the Blank
+//         SVTXT- for Survey Text
+//         SVRAT- for Survey Rating
+
+    if (submitted) { 
+        return false; 
+    } // Form already submitted
+    else {
+        submitted = true;
+    } // Set submitted flag to true
+
+    f = window.document.page;
+    
+    var numUnanswered = 0; // counter for any unanswered Flash items
+    var totalresp = 0;
+
+    // Don't verify the questions if they don't exist (exam_intro_return/exam_prescription)    
+    if (Question.index == 0) {
+        // if display_id was set (i.e. timed exam) then clear the timer interval
+        if (window.display_id) {
+            clearInterval(display_id);
+        }
+        if (window.ping_id) {
+	      clearInterval(ping_id);
+	     }
+        f.submit();
+        return true;
+    }
+
+    for (var i=1; i<= Question.index; i++) {
+        totalresp += Question[i].numresp; // add up all Question responses
+    }
+    
+    var findex = f.elements.length - totalresp; // form element index for 1st Response string (after KG's stuff)    
+    
+    for (var i=1; i<= Question.index; i++) {    
+        
+        if (Question[i].type == "FIB"){
+
+            findFormRef(Question[i]);
+            result = "";
+            for (var j=0; result=="" && j < subform.elements.length; j++)
+            {
+                if (subform.elements[j].type == "text" ||
+                    subform.elements[j].type == "textarea")
+                {
+                    result = Question[i].response_labels[1] + "=" + encodeURIComponent(subform.elements[j].value);
+                    // we are not currently supporting multiple
+                    // responses for FIB, therefore we can exit
+                    // when we find the first.
+                    break;
+                }
+            }
+
+            f.elements[findex].value = result; // set main form value
+            findex++;
+            
+        }
+        else if (Question[i].type == "TF" || Question[i].type == "MCSA" || Question[i].type == "SVRAT"){
+            findFormRef(Question[i]);
+            result = "";
+            
+            // If display type is a dropdown list, else assume default radio buttons
+            if (Question[i].display == "dropdown")
+            {
+                var selectRef = subform[Question[i].response_id];
+                // grab value from selected item
+                result = selectRef.options[selectRef.selectedIndex].value;
+            }
+            else
+            {
+                // Default Radio button display
+                for (var j=0; result=="" && j < subform.elements.length; j++){
+                    if (subform.elements[j].checked) { result = subform.elements[j].value; } // if checked grab value
+                }
+            }
+            
+            f.elements[findex].value = Question[i].response_labels[1] + "=" + result; // set main form value
+            findex++;
+            
+        }
+        else if (Question[i].type == "MCMA"){
+            findFormRef(Question[i]);
+            result = "";
+            for (var j=0; j < subform.elements.length; j++){
+                // Add if to ignore empty form elements (IE bug)
+                if(subform.elements[j].value)
+                {
+                    if (subform.elements[j].checked) { 
+                        result = subform.elements[j].value; 
+                    } // end if checked grab value
+                    else {
+                        result = ""; // return null
+                    } // end if not checked
+                    
+                    f.elements[findex].value = Question[i].response_labels[1] + "=" + result; // set main form value
+                    findex++;
+                }
+            } // end loop thru subform elements
+        
+        } // end MCMA type
+        else if (Question[i].type == "SVTXT"){
+            findFormRef(Question[i]);
+            result = Question[i].response_labels[1] + "=" + encodeURIComponent(subform.elements[0].value); // grab text value
+            
+            f.elements[findex].value = result; // set main form value
+            findex++;
+        }
+        else if (Question[i].type == "SSI" || Question[i].type == "SST"){
+            for (var j=1; j <= Question[i].numresp; j++){
+                // if no labels defined (i.e. no user response) then reset values to null string
+        		currItem = Question[i].response_array[j];
+                if(currItem == "" || currItem == " " || currItem == "null")
+                {
+                    f.elements[findex].value = Question[i].response_labels[j]+"=SSAI_HACK" // set main form value
+                    findex++;
+                    numUnanswered++; // increment number of unanswered items/observables
+                }
+                else
+                {                
+                	// skip if the value has already been encoded
+                	if (currItem == unescape(currItem)) {
+                		currItem = encodeURIComponent(currItem);
+                	}
+                    result = Question[i].response_labels[j] + "=" + currItem; // grab text value
+                    f.elements[findex].value = result; // set main form value
+                    findex++;
+                }
+            }
+        }
+    }        
+            
+    // if display_id was set (i.e. timed exam) then clear the timer interval
+    if (window.display_id) {
+    	clearInterval(display_id);
+    }
+    if (window.ping_id) {
+	    clearInterval(ping_id);
+	}
+
+    // if IE then set flag in each Flash button to prevent submission interruption
+    if (navigator.userAgent.indexOf("MSIE ") > 0) {
+        endFlashSubmission();
+    }
+
+    // Submit main form to server
+    if (getResponse) {
+    	f.submit(); // submit main page form
+    } else {
+	    jQuery.ajax({
+	    	type: "POST",
+	    	url: "exam.html",
+	    	data: $("[name=page]").serialize(),
+	    	async: !sync,
+	    	cache: false,
+	    	success: function(){
+	    		vdscore.takeexam.debug("responses captured")
+	    	}
+	    });
+	    submitted = false;
+    }
+    return true;
+
+} // end response function
+
+
+function charCount(id, maxchars) {
+    var result=""; // initially set to null
+    
+    for (var i=1; i<= Question.index; i++) {
+        if ( Question[i].id == id ) { var qnum = i } 
+    } // end for loop thru Questions to match id
+    
+    findFormRef(Question[qnum]);
+    
+    result = subform.elements[0].value; 
+
+    if (result.length > maxchars) {
+        alert('Please limit input to '+maxchars+' characters.');
+        subform.elements[0].focus();
+        return false; // needed for IE
+    }
+    return true; // needed for IE
+}
+
+function ping() {
+	window.document.getElementById('ping').src="exam.html?BUTTON=ping";
+}
+
+function displayTimeLeft() {
+  var timeLeft = document.time.initial_time_left.value
+  showTime();
+
+  if (timeLeft <= 600000 && timeLeft > 599000) { 
+    window.open("exam_alert.html?BUTTON=warning", "","toolbar=no,location=no,directories=no,resizable=yes,menubar=no,scrollbars=yes,width=850,height=420");
+  }
+         
+  if(document.time.initial_time_left.value == 0) {
+    if (window.display_id) {
+	  clearInterval(display_id); // stop repeating of display
+	}
+    if (window.ping_id) {
+	  clearInterval(ping_id); // stop repeating of display
+	}
+	performAction('expired');
+	return false;
+  }
+  else {
+    if (timeLeft - 1000 < 0) { 
+      timeLeft = 0 
+    }
+    else { 
+      timeLeft = timeLeft - 1000 
+    }
+                              
+    document.time.initial_time_left.value = timeLeft;
+    return true;
+  }
+}
+
+function showTime( timeLeft) {
+  var timeLeft = document.time.initial_time_left.value
+  var hours = Math.floor(timeLeft / 3600000);
+  var minutes = Math.floor((timeLeft - (hours * 3600000)) / 60000);
+  var seconds = Math.floor((timeLeft - (hours * 3600000) - (minutes * 60000)) / 1000);
+
+  result = (hours < 10 ? "0" + hours : hours) + ":" + 
+           (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+           (seconds < 10 ? "0" + seconds : seconds);
+         
+  result = result.replace( /0/g, transliterate[0]);
+  result = result.replace( /1/g, transliterate[1]);
+  result = result.replace( /2/g, transliterate[2]);
+  result = result.replace( /3/g, transliterate[3]);
+  result = result.replace( /4/g, transliterate[4]);
+  result = result.replace( /5/g, transliterate[5]);
+  result = result.replace( /6/g, transliterate[6]);
+  result = result.replace( /7/g, transliterate[7]);
+  result = result.replace( /8/g, transliterate[8]);
+  result = result.replace( /9/g, transliterate[9]);
+
+  document.time.time_left.value = result;
+
+}
+
+/**
+*   <!-- UNICOMMENT
+*   setItemResponse will be called by Flash items with an XML string containing 
+*   the response.  This response will be converted to the expected output for 
+*   the servlet and stored until the user navigates to the next page.
+*
+*   Method:     setItemResponse
+*
+*   Parameters:
+*       responseXML        String
+*
+*   Return: void
+*   UNICOMMENT -->
+*/
+function setItemResponse(responseXML)
+{
+    // If IE, grab responseXML from the Flash directly
+    if (jQuery.browser.msie)
+    {
+        // Expecting groupID to use to grab full response XML from movie
+        responseXML = window.document[responseXML+"Flash"].GetVariable("xmlOut");
+    }
+    responseXML = decodeURIComponent(responseXML);
+//    alert("Flash response: " + responseXML);
+    // Define array to hold all item IDs from the response XML
+    var itemIDArray = new Array();
+    
+    // Split response string by <item to identify the number of items (in case of testlet)
+    var itemSplit = responseXML.split('<item');
+    // Loop thru split string ignoring the 0 element which contains string prior to 1st <item
+    for (var i=1; i<itemSplit.length; i++) {
+        // Grab item's id attribute value
+        var itemID = getAttributeValueByName(itemSplit[i],"id");
+        // Define array to hold the observable names for this item
+        var obsName = new Array();
+        // Add item ID to array of all item IDs for the response?
+        itemIDArray[itemIDArray.length] = itemID;
+       
+        // Define regular expression to grab observable element of XML
+        obsRE = /<observable[^>]*>([^<]*)<\/observable>/gi;
+        var obsMatch = itemSplit[i].match(obsRE);
+        // Loop thru each observable match
+        for (var ii=0; ii<obsMatch.length; ii++)
+        {
+            // Grab the observables name attribute value
+            obsName[ii] = getAttributeValueByName(obsMatch[ii],"name");
+            // Grab the substring that contains the observable node value
+            obsMatch[ii] = obsMatch[ii].substring(obsMatch[ii].indexOf(">")+1,obsMatch[ii].indexOf("</"));
+        } // end for loop thru observables
+        
+        // Loop thru all Questions on page to find match for the itemID
+        for (var ii=1; ii<= Question.index; ii++) 
+        {
+           if (itemID == Question[ii].id)
+           {
+               // Store all observables in the Question response property arrays
+               for (var iii=0; iii<obsMatch.length; iii++) {
+                   if(obsMatch[iii].toLowerCase() == "null" || obsMatch[iii] == "" || obsMatch[iii] == " ") {
+                           obsMatch[iii] = ""; // if NULL value then set value to empty string
+                   }
+                   Question[ii].response_array[iii+1] = encodeURIComponent(obsMatch[iii]); // save parsed XML string for item
+                   Question[ii].response_labels[iii+1] = obsName[iii];
+               } // end for loop thru item observables
+           } // end if item ID match to Question
+        } // end for loop thru Questions
+
+     }// end for loop thru all items in XML
+} // end function
+
+/**
+*   <!-- UNICOMMENT
+*   Method takes an XML string and returns the value in double-quotes that 
+*   follows a section containing another specified string.  This is a crude
+*   way to obtain the attribute value by specifying the attribute name.
+*
+*   Method:     getAttributeValueByName
+*
+*   Parameters:
+*       xmlString               String
+*       name                    String
+*
+*   Return: String
+*   UNICOMMENT -->
+*/
+function getAttributeValueByName(xmlString,name)
+{
+    var xmlDiv = xmlString.split('"');
+    for (var i=0; i<xmlDiv.length; i++)
+    {
+        if (xmlDiv[i].indexOf(name) > -1)
+        {
+            return xmlDiv[i+1];
+        }
+    }
+}
+
+/**
+*   <!-- UNICOMMENT
+*   This method will set a flag in each Flash AI to prevent IE from submitting
+*    to the page after page submission has begun.
+*
+*   Method:     endFlashSubmission
+*
+*   Parameters: none
+*
+*   Return: void
+*   UNICOMMENT -->
+*/
+function endFlashSubmission()
+{ 
+    var flashHash = new Object();
+    for (var i=1; i<= Question.index; i++) 
+    {
+        var questionRef = Question[i];
+        if(questionRef.type == "SSI" || (questionRef.type == "SST" && !flashHash[questionRef.groupid]))
+        {
+            window.document[questionRef.groupid+"Flash"].SetVariable("hdrName","No submit");
+            window.document[questionRef.groupid+"Flash"].SetVariable("response","none");
+            flashHash[questionRef.groupid] = true;
+        }
+    } // end for loop thru Questions
+}
+
+/**
+*   <!-- UNICOMMENT
+*   method to limit the number of characters that can be entered in to text areas
+*
+*   Method:     textareaCount
+*
+*   Parameters: 
+*        textarea            object
+*        totalLength            number
+*
+*   Return: void
+*   UNICOMMENT -->
+*/
+    function textareaCount(textarea,totalLength) {
+        textareaRef = textarea;
+        totalLengthRef = totalLength;
+        // turn the text area value into a string
+        areaString = new String(textarea.value);
+        //alert(areaString);
+        // check the string length against the totalLength parameter
+        if (areaString.length <= totalLength) {
+            maxString = areaString;
+        }
+        if (areaString.length > totalLength) {
+            //if greater set to max string
+            textarea.value = maxString;
+        }
+        setTimeout("textareaCount(textareaRef,totalLengthRef);",250)
+    }
