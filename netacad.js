@@ -6,13 +6,65 @@
 
 (async () => {
 	class IFrame {
+		parentDiv = null;
 		iframe = null;
 		visible = false;
-		enabled = true;
+		enabled = false;
+		options = {
+			autofill: false,
+			autonext: false,
+			minWait: 1,
+			maxWait: 5,
+		};
 
 		constructor(src = undefined, visible = false) {
+			this.parentDiv = document.createElement("div");
+			this.parentDiv.style = "display: block; position: fixed; bottom: 65px; right: 40px; width: 700px; border: 1px solid #777; background: #fff;";
 			this.iframe = document.createElement("iframe");
-			this.iframe.style = "position: fixed; bottom: 65px; right: 40px; width: 700px; height: 40vh; border: 1px solid #777; background: #fff;";
+			this.iframe.style = "width: 100%; height: 40vh; border: 1px solid #777;";
+			document.body.appendChild(this.parentDiv);
+			this.parentDiv.appendChild(this.iframe);
+			//controls
+			let controlsElement = document.createElement("div");
+			controlsElement.style = "display: grid; gap: 1rem";
+			let controlsHTML =
+				`
+            <div>
+            <div style="display: flex; gap: 2rem;">
+            <div style="display: flex">
+                <input id="netacadExam-autofill" type="checkbox" />
+                <label for="netacadExam-autofill" style="margin: auto 0;">Autofill</label>
+            </div>
+            <div id="netacadExam-autofillOptions" style="display: none; gap: 2rem;">
+                <div style="display: flex;">
+                    <input id="netacadExam-autonext" type="checkbox" />
+                    <label for="netacadExam-autonext" style="margin: auto 0;">Auto next</label>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                     <input id="netacadExam-minWait" type="number" value="` +
+				this.options.minWait +
+				`" style="width: 4rem;" />
+                     <label for="netacadExam-minWait" style="margin: auto 0;">Min. wait</label>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                     <input id="netacadExam-maxWait" type="number" value="` +
+				this.options.maxWait +
+				`" style="width: 4rem;" />
+                     <label for="netacadExam-maxWait" style="margin: auto 0;">Max. wait seconds</label>
+                </div>
+            </div>
+            </div>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button id="netacadExam-hide">Hide (.)</button>
+                <button id="netacadExam-disable">Disable (p)</button>
+                <button id="netacadExam-updateSettings">Update settings</button>
+            </div>
+            `;
+			controlsElement.innerHTML = controlsHTML;
+			this.parentDiv.appendChild(controlsElement);
+			//
+			this.setEnabled(false);
 			if (src) this.setSource(src);
 			if (visible) this.setVisible(visible);
 		}
@@ -23,7 +75,9 @@
 
 		setEnabled(enabled) {
 			this.enabled = enabled;
-			if (!this.enabled) {
+			if (this.enabled) {
+				this.setVisible(true);
+			} else {
 				this.setVisible(false);
 			}
 		}
@@ -31,10 +85,13 @@
 		setVisible(visible) {
 			if (this.enabled) {
 				this.visible = visible;
-				if (visible) document.body.appendChild(this.iframe);
-				else this.iframe.parentNode.removeChild(this.iframe);
+				if (visible) {
+					this.parentDiv.style.display = "block";
+				} else {
+					this.parentDiv.style.display = "none";
+				}
 			} else {
-				this.iframe.parentNode.removeChild(this.iframe);
+				this.parentDiv.style.display = "none";
 			}
 		}
 	}
@@ -68,6 +125,9 @@
 	let netacad = new Netacad();
 	let itea = new ITEA();
 
+	let previousButton = document.querySelectorAll("button#previous")[0];
+	let nextButton = document.querySelectorAll("button#next")[0];
+
 	/* Creates an object to render the html to the canvas */
 	function URLObjectFromHTML(html) {
 		return URL.createObjectURL(new Blob([html], { type: "text/html" }));
@@ -97,7 +157,6 @@
 	// Searches for the answer to the current question
 	async function handleAnswer() {
 		if (!iframe.enabled) return;
-		iframe.setVisible(true);
 		let cache = "";
 		try {
 			iframe.setSource(URLObjectFromHTML(netacad.CISCOgetQuestion()));
@@ -138,7 +197,9 @@
 			str = `${error.name}<br>${error.message}`;
 		}
 
-		autofill(cache);
+		if (iframe.options.autofill) {
+			autofill(cache);
+		}
 		removeOverlays();
 	}
 
@@ -149,31 +210,58 @@
 			let doc = dp.parseFromString(cache, "text/html");
 
 			let startElement = doc.querySelector("#jumphere");
-			let answers = null;
-
+			let answersElement = null;
 			// Loop through all the sibling elements of the start element
 			let nextElement = startElement.nextElementSibling;
 			while (nextElement) {
 				if (nextElement.nodeName === "UL") {
-					answers = nextElement;
+					answersElement = nextElement;
 					nextElement = false;
 				}
 				nextElement = nextElement.nextElementSibling;
 			}
 
-			let correctAnswers = answers.querySelectorAll(".correct_answer");
-			let currentQuestionElement = document.querySelector(".question, :not(.hidden)");
-			correctAnswers.forEach((item) => {
-				var questionElements = currentQuestionElement.querySelectorAll("*");
-				var matchingElements = [];
-				for (var i = 0; i < questionElements.length; i++) {
-					if (questionElements[i].innerHTML.includes(item.innerHTML)) {
-						matchingElements.push(questionElements[i]);
-						questionElements[i].click();
+			let redElements = answersElement.querySelectorAll("span[style='color:red']");
+			let correctAnswerArray = [];
+			for (let i = 0; i < redElements.length; i++) {
+				let parentElement = redElements[i].parentNode;
+				if (parentElement.tagName === "LI") {
+					correctAnswerArray.push(redElements[i].textContent);
+				} else if (parentElement.tagName === "STRONG") {
+					correctAnswerArray.push(parentElement.textContent);
+				} else {
+					let siblings = parentElement.parentNode.childNodes;
+					for (let j = 0; j < siblings.length; j++) {
+						if (siblings[j].nodeType === Node.TEXT_NODE) {
+							correctAnswerArray.push(siblings[j].textContent);
+						}
 					}
 				}
-				console.log(matchingElements);
-			});
+			}
+
+			let autofilled = false;
+			if (correctAnswerArray.length > 0) {
+				let currentQuestionElement = document.querySelector(".question, :not(.hidden)");
+				// Search the entire question element and trigger mouse click
+				let allElements = currentQuestionElement.querySelectorAll("*");
+				for (let i = 0; i < allElements.length; i++) {
+					let htmlText = allElements[i].textContent.trim();
+					htmlText = htmlText.replace("\n", "");
+					htmlText = htmlText.replace("\t", "");
+					htmlText = htmlText.replace(/\r?\n|\r/g, " ").trim();
+					htmlText = htmlText.replace(/\s+/g, " ");
+					if (correctAnswerArray.includes(htmlText)) {
+						allElements[i].click();
+						autofilled = true;
+					}
+				}
+				if (autofilled && iframe.options.autonext) {
+					var waitNext = (Math.floor(Math.random() * (iframe.options.maxWait - iframe.options.minWait)) + 1) * 1000;
+					setTimeout(() => {
+						nextButton.click();
+					}, waitNext);
+				}
+			}
 		} catch (error) {
 			console.log("failed autofill: " + error);
 		}
@@ -194,6 +282,7 @@
 
 	/* Loads the answer to the current question */
 	function refreshAnswer() {
+		if (!iframe.enabled) return;
 		setTimeout(() => {
 			handleAnswer();
 		}, 1000);
@@ -201,20 +290,48 @@
 
 	/* Activate / Disable canvas overlay */
 	function handleActivation(k) {
-		if (iframe.visible) {
-			iframe.setVisible(false);
-		} else {
-			handleAnswer();
-		}
+		handleAnswer();
 	}
 
-	let previousButton = document.querySelectorAll("button#previous")[0];
-	let nextButton = document.querySelectorAll("button#next")[0];
 	previousButton.onclick = function () {
 		refreshAnswer();
 	};
 	nextButton.onclick = function () {
 		refreshAnswer();
+	};
+
+	let controlsHideBtn = document.querySelector("button#netacadExam-hide");
+	controlsHideBtn.onclick = function () {
+		iframe.setVisible(false);
+	};
+	let controlsDisableBtn = document.querySelector("button#netacadExam-disable");
+	controlsDisableBtn.onclick = function () {
+		iframe.setEnabled(false);
+	};
+	let optionsAutofillBtn = document.querySelector("#netacadExam-autofill");
+	let autofillOptionsElement = document.querySelector("#netacadExam-autofillOptions");
+	let optionsAutonextBtn = document.querySelector("#netacadExam-autonext");
+	let optionsMinWaitInput = document.querySelector("#netacadExam-minWait");
+	let optionsMaxWaitInput = document.querySelector("#netacadExam-maxWait");
+	let updateSettingsBtn = document.querySelector("button#netacadExam-updateSettings");
+	optionsAutofillBtn.onclick = function () {
+		if (optionsAutofillBtn.checked) {
+			autofillOptionsElement.style.display = "flex";
+		} else {
+			autofillOptionsElement.style.display = "none";
+		}
+	};
+	updateSettingsBtn.onclick = function () {
+		let textContent = updateSettingsBtn.textContent;
+		iframe.options.autofill = optionsAutofillBtn.checked;
+		iframe.options.autonext = optionsAutonextBtn.checked;
+		iframe.options.minWait = optionsMinWaitInput.value;
+		iframe.options.maxWait = optionsMaxWaitInput.value;
+		updateSettingsBtn.textContent = "Updated!";
+		handleActivation();
+		setTimeout(() => {
+			updateSettingsBtn.textContent = textContent;
+		}, 1000);
 	};
 
 	document.addEventListener("mousedown", (event) => {
@@ -223,10 +340,11 @@
 		}
 	});
 	document.addEventListener("keypress", (k) => {
-		if (k.key == ".") handleActivation();
-		else if (k.key == "p") {
-			iframe.setEnabled = iframe.enabled ? false : true;
+		if (k.key == "p") {
+			iframe.setEnabled(!iframe.enabled);
 			handleActivation();
+		} else if (k.key == ".") {
+			iframe.setVisible(!iframe.visible);
 		}
 	});
 })();
